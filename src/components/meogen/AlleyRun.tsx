@@ -177,62 +177,70 @@ export function AlleyRun({
     };
 
     const drawWorld = (gy: number, scrollDist: number) => {
-      ctx.fillStyle = "#1a1620";
+      ctx.fillStyle = "#e7decc";
       ctx.fillRect(0, 0, w, h);
       const sky = ctx.createLinearGradient(0, 0, 0, gy);
-      sky.addColorStop(0, "#3a4e68");
-      sky.addColorStop(1, "#1a1620");
+      sky.addColorStop(0, "#c9bfa8");
+      sky.addColorStop(1, "#e7decc");
       ctx.fillStyle = sky;
       ctx.fillRect(0, 0, w, gy);
-      ctx.fillStyle = "#e2c9a0";
-      ctx.beginPath();
-      ctx.arc(w * 0.82, h * 0.14, 18, 0, Math.PI * 2);
-      ctx.fill();
 
-      const par = (scrollDist * 0.12) % (w + 160);
-      ctx.fillStyle = "#243028";
-      ctx.beginPath();
-      ctx.ellipse(w * 0.2 - par, gy + 20, 140, 70, 0, 0, Math.PI * 2);
-      ctx.ellipse(w * 0.7 - par, gy + 30, 180, 80, 0, 0, Math.PI * 2);
-      ctx.ellipse(w * 1.2 - par, gy + 20, 140, 70, 0, 0, Math.PI * 2);
-      ctx.fill();
-
-      ctx.fillStyle = "#4d6a52";
-      ctx.fillRect(0, gy, w, h - gy);
-      ctx.fillStyle = "#2a2320";
-      ctx.fillRect(0, gy, w, 4);
-
-      const scroll = (scrollDist * 0.4) % 48;
-      ctx.fillStyle = "#6f8f74";
-      for (let x = -scroll; x < w; x += 48) {
-        ctx.fillRect(x, gy + 10, 18, 3);
+      const tile = 44;
+      const scroll = (scrollDist * 0.35) % (tile * 2);
+      for (let y = gy; y < h + tile; y += tile) {
+        for (let x = -scroll; x < w + tile; x += tile) {
+          const col = (Math.floor((x + scroll) / tile) + Math.floor((y - gy) / tile)) % 2;
+          ctx.fillStyle = col ? "#d9cfb8" : "#e7decc";
+          ctx.fillRect(x, y, tile, tile);
+        }
       }
+
+      ctx.strokeStyle = "#14110e";
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.moveTo(0, gy);
+      ctx.lineTo(w, gy);
+      ctx.stroke();
+
+      const grassScroll = (scrollDist * 0.5) % 18;
+      ctx.lineWidth = 1.6;
+      for (let x = -grassScroll; x < w; x += 18) {
+        const gh = 6 + ((Math.floor(x) * 13) % 12);
+        ctx.beginPath();
+        ctx.moveTo(x, gy);
+        ctx.lineTo(x + 2, gy - gh);
+        ctx.stroke();
+      }
+
+      const vig = ctx.createRadialGradient(w * 0.5, h * 0.42, h * 0.18, w * 0.5, h * 0.42, h * 0.78);
+      vig.addColorStop(0, "rgba(20,17,14,0)");
+      vig.addColorStop(1, "rgba(20,17,14,0.55)");
+      ctx.fillStyle = vig;
+      ctx.fillRect(0, 0, w, h);
     };
 
     const drawCrate = (o: Obstacle, gy: number) => {
       const y = gy - o.h;
+      ctx.lineWidth = 3;
+      ctx.strokeStyle = "#14110e";
       if (o.kind === 1) {
-        ctx.fillStyle = "#3a4e68";
+        ctx.fillStyle = "#6f8f74";
         ctx.beginPath();
         ctx.roundRect(o.x, y, o.w, o.h, 8);
         ctx.fill();
-        ctx.strokeStyle = "#171210";
-        ctx.lineWidth = 2;
         ctx.stroke();
-        ctx.fillStyle = "#c9a06a";
-        ctx.fillRect(o.x + 3, y + 6, o.w - 6, 3);
+        ctx.fillStyle = "#14110e";
+        ctx.fillRect(o.x + 4, y + 7, o.w - 8, 3);
         return;
       }
-      ctx.fillStyle = "#6a4a58";
-      ctx.fillRect(o.x, y, o.w, o.h);
       ctx.fillStyle = "#c9a06a";
-      ctx.fillRect(o.x, y, o.w, 5);
-      ctx.strokeStyle = "#171210";
-      ctx.lineWidth = 2;
+      ctx.fillRect(o.x, y, o.w, o.h);
+      ctx.fillStyle = "#f4ead8";
+      ctx.fillRect(o.x, y, o.w, 6);
       ctx.strokeRect(o.x, y, o.w, o.h);
-      ctx.fillStyle = "#4a3240";
-      ctx.fillRect(o.x + 4, y + 8, 2, Math.max(8, o.h - 12));
-      ctx.fillRect(o.x + o.w - 6, y + 8, 2, Math.max(8, o.h - 12));
+      ctx.fillStyle = "#14110e";
+      ctx.fillRect(o.x + 5, y + 10, 2, Math.max(8, o.h - 16));
+      ctx.fillRect(o.x + o.w - 7, y + 10, 2, Math.max(8, o.h - 16));
     };
 
     const tick = (now: number) => {
@@ -366,7 +374,7 @@ export function AlleyRun({
       for (const s of dust) {
         if (!s.live) continue;
         ctx.globalAlpha = 1 - s.life / s.max;
-        ctx.fillStyle = "#c9a06a";
+        ctx.fillStyle = "#14110e";
         ctx.fillRect(s.x, s.y, 3, 3);
         ctx.globalAlpha = 1;
       }
@@ -420,26 +428,28 @@ export function AlleyRun({
     <div className="relative">
       <canvas
         ref={canvasRef}
-        className="h-[52vh] min-h-56 w-full touch-none rounded-xl border border-border bg-ink"
+        className="h-[52vh] min-h-56 w-full touch-none border-[3px] border-ink bg-bg"
       />
       <div className="pointer-events-none absolute inset-x-3 top-3 flex items-start justify-between text-sm">
-        <p className="rounded-sm bg-ink/70 px-2 py-1 font-display italic">{cat.name}</p>
-        <p ref={hudRef} className="rounded-sm bg-ink/70 px-2 py-1 tabular">
+        <p className="banner px-3 py-1 font-display tracking-wide text-fg">{cat.name}</p>
+        <p ref={hudRef} className="banner px-3 py-1 tabular text-fg">
           Leap to go
         </p>
       </div>
       {waiting && !over && (
         <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-          <p className="rounded-md bg-ink/75 px-4 py-2 font-display text-xl italic">Leap to go</p>
+          <p className="banner font-display text-2xl tracking-wide text-fg">Leap to go</p>
         </div>
       )}
       {over && (
-        <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 rounded-xl bg-ink/70">
-          <p className="font-display text-3xl italic tabular">{over.score}</p>
-          <p className="text-sm text-muted">{markLine}</p>
-          <Button variant="accent" onClick={onRetry}>
-            Run again
-          </Button>
+        <div className="absolute inset-0 flex flex-col items-center justify-center bg-ink/40">
+          <div className="scrap bg-surface p-6 text-center">
+            <p className="font-display text-4xl tracking-wide tabular text-fg">{over.score}</p>
+            <p className="mt-1 text-sm text-muted">{markLine}</p>
+            <Button variant="accent" className="mt-4" onClick={onRetry}>
+              Run again
+            </Button>
+          </div>
         </div>
       )}
       <div className="mt-3 flex flex-col items-center gap-2 sm:hidden">

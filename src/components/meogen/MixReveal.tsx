@@ -63,11 +63,13 @@ export function MixReveal({
       aria-labelledby="mix-title"
     >
       <div
-        className="max-h-[92dvh] w-full max-w-lg overflow-y-auto rounded-2xl border border-border bg-surface p-5 pt-8 shadow-soft"
+        className="max-h-[92dvh] w-full max-w-lg overflow-y-auto scrap bg-surface p-5 pt-8"
         onClick={(e) => e.stopPropagation()}
       >
-        <p className="seal">Kitten</p>
-        <h2 id="mix-title" className="mt-1 font-display text-3xl italic text-balance">
+        <p className="banner font-display text-xl tracking-wide">
+          {cat.mutant ? "Mutant kit" : "Kitten"}
+        </p>
+        <h2 id="mix-title" className="mt-3 font-display text-4xl tracking-wide text-balance">
           {landed ? cat.name : "Organs choosing…"}
         </h2>
         <p className="mt-1 text-sm text-muted">
@@ -76,6 +78,9 @@ export function MixReveal({
           {landed && cat.mutant ? " · mutant" : ""}
           {dam && sire ? ` · ${dam.name} × ${sire.name}` : ""}
         </p>
+        {landed && cat.mutant && (
+          <p className="bubble mt-4 text-base">It came out wrong. Keep it.</p>
+        )}
         <CatPortrait
           cat={cat}
           className="mx-auto mt-6 max-w-56 py-8"
@@ -89,13 +94,13 @@ export function MixReveal({
             return (
               <div
                 key={row.organ}
-                className="flex items-center justify-between rounded-md border border-border bg-elevated/60 px-3 py-2 text-sm"
+                className="flex items-center justify-between border-[3px] border-ink bg-elevated px-3 py-2 text-sm"
               >
-                <span className="uppercase tracking-[0.16em] text-muted">{row.organ}</span>
+                <span className="font-display tracking-wide text-muted">{row.organ}</span>
                 {open ? (
                   <span className="flex items-center gap-2 organ-land">
                     <span
-                      className="size-3 rounded-full border border-border"
+                      className="size-3 rounded-full border-2 border-ink"
                       style={{ background: coat.hex }}
                     />
                     <span>{coat.name}</span>
@@ -115,7 +120,7 @@ export function MixReveal({
             <p className="mt-3 text-xs tabular text-subtle">
               nerve {t.nerve} · mass {t.mass} · luck {t.luck}
             </p>
-            <p className="mt-1 break-all font-mono text-[10px] text-subtle">{genomeHex(cat)}</p>
+            <p className="mt-1 break-all font-mono text-xs text-subtle">{genomeHex(cat)}</p>
             <div className="mt-4">
               <GeneStrip cat={cat} showFrom />
             </div>

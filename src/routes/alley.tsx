@@ -31,8 +31,8 @@ function AlleyPage() {
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
-      <p className="seal text-muted">Alley</p>
-      <h1 className="mt-2 font-display text-4xl italic text-balance">Send a cat out</h1>
+      <p className="seal">Alley</p>
+      <h1 className="mt-2 font-display text-5xl tracking-wide text-balance">Send a cat out</h1>
       <p className="mt-3 max-w-xl text-pretty text-muted">
         Nerve lifts the leap. Mass buys a second life. Luck sometimes slips a crate. Leap to go —
         the clock waits.
@@ -40,16 +40,16 @@ function AlleyPage() {
 
       {!cat && marks.length > 0 && (
         <section className="mt-8">
-          <p className="seal text-muted">Marks</p>
+          <p className="banner font-display text-xl tracking-wide">Marks</p>
           <ol className="mt-3 space-y-2">
             {marks.slice(0, 6).map((c, i) => (
               <li key={c.id}>
                 <button
                   type="button"
                   onClick={() => navigate({ search: { cat: c.id } })}
-                  className="flex w-full items-center justify-between rounded-xl border border-border bg-surface/70 px-4 py-3 text-left hover:border-border-strong"
+                  className="flex w-full items-center justify-between scrap px-4 py-3 text-left hover:bg-elevated"
                 >
-                  <span className="font-display italic">
+                  <span className="font-display text-xl tracking-wide">
                     {i + 1}. {c.name}
                   </span>
                   <span className="tabular text-muted">{c.alleyBest}</span>
@@ -77,7 +77,7 @@ function AlleyPage() {
         <div className="mt-8 space-y-4">
           <div className="flex flex-wrap items-end justify-between gap-3">
             <div>
-              <p className="font-display text-2xl italic">{cat.name}</p>
+              <p className="font-display text-3xl tracking-wide">{cat.name}</p>
               <p className="text-sm tabular text-muted">
                 nerve {t.nerve} · mass {t.mass} · luck {t.luck}
                 {cat.alleyBest ? ` · best ${cat.alleyBest}` : ""}

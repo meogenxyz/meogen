@@ -159,6 +159,35 @@ export const FOUNDER_NOTE: Record<string, string> = {
   f_6: "Calico face, coal body.",
 };
 
+export function labMutant(name: string, coat: Record<Organ, number>, seed: number): Cat {
+  return {
+    id: `lab_${seed}`,
+    name,
+    gen: 1,
+    damId: null,
+    sireId: null,
+    coat,
+    mutant: true,
+    bornAt: 0,
+    alleyBest: 0,
+    trace: ORGANS.map((organ) => ({ organ, from: "mutant" as const, coatId: coat[organ] })),
+  };
+}
+
+/** Display-only kits for the Lab wall. Not in the cattery persist. */
+export const LAB_MUTANTS: Cat[] = [
+  labMutant("Gilt*", { head: 11, body: 11, tail: 11, legs: 11 }, 101),
+  labMutant("Split*", { head: 10, body: 9, tail: 1, legs: 8 }, 102),
+  labMutant("Rowmeo*", { head: 5, body: 11, tail: 3, legs: 1 }, 103),
+  labMutant("Kinpel*", { head: 2, body: 0, tail: 7, legs: 6 }, 104),
+];
+
+export function isLabNote(cat: Cat) {
+  return cat.id.startsWith("lab_");
+}
+
+export const PARTY: Cat[] = [FOUNDERS[1]!, FOUNDERS[0]!, LAB_MUTANTS[0]!, FOUNDERS[5]!, LAB_MUTANTS[1]!];
+
 export function byId(cats: Cat[], id: string | null | undefined): Cat | undefined {
   if (!id) return undefined;
   return cats.find((c) => c.id === id);

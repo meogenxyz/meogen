@@ -44,7 +44,7 @@ export function CatPortrait({
           />
         ))}
       {seal && cat.mutant && visible.length >= ORGANS.length && (
-        <span className="absolute right-1 top-1 rounded-sm bg-accent px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-accent-fg">
+        <span className="absolute right-0 top-0 z-40 border-[3px] border-ink bg-accent px-1.5 py-0 font-display text-sm tracking-wide text-accent-fg">
           mutant
         </span>
       )}

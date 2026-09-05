@@ -1,43 +1,38 @@
-@import url("https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,500;1,9..144,600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Bangers&family=Kalam:wght@400;700&display=swap");
 @import "tailwindcss";
 
 @theme {
-  --color-bg: #14131c;
-  --color-surface: #1e1a1c;
-  --color-elevated: #2a2320;
-  --color-fg: #f6ecdc;
-  --color-muted: #b39a86;
-  --color-subtle: #7d6a5c;
-  --color-accent: #d4563a;
-  --color-accent-fg: #fff6ee;
-  --color-sage: #6f8f74;
-  --color-ink: #12101a;
-  --color-sky: #3a4e68;
-  --color-dusk: #6a4a58;
-  --color-moss: #4d6a52;
-  --color-border: color-mix(in oklab, var(--color-fg) 14%, transparent);
-  --color-border-strong: color-mix(in oklab, var(--color-accent) 28%, transparent);
-  --color-ok: #6f8f74;
+  --color-bg: #e7decc;
+  --color-surface: #f4ead8;
+  --color-elevated: #faf3e6;
+  --color-fg: #1c1814;
+  --color-muted: #5c5348;
+  --color-subtle: #8a7f72;
+  --color-accent: #c44532;
+  --color-accent-fg: #faf3e6;
+  --color-ink: #14110e;
+  --color-border: color-mix(in oklab, var(--color-ink) 22%, transparent);
+  --color-border-strong: color-mix(in oklab, var(--color-ink) 55%, transparent);
+  --color-ok: #5a6a4a;
   --color-warn: #c9a06a;
-  --color-danger: #c45c4a;
+  --color-danger: #c44532;
 
-  --font-sans: "Figtree", system-ui, sans-serif;
-  --font-display: "Fraunces", Georgia, serif;
+  --font-sans: "Kalam", "Segoe UI", system-ui, sans-serif;
+  --font-display: "Bangers", "Impact", system-ui, sans-serif;
   --font-mono: "SF Mono", ui-monospace, Menlo, Consolas, monospace;
 
-  --radius-xs: 4px;
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 16px;
-  --radius-xl: 24px;
-  --radius-2xl: 32px;
+  --radius-xs: 3px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 18px;
+  --radius-2xl: 24px;
 
-  --shadow-soft: 0 18px 50px color-mix(in oklab, #000 42%, transparent);
+  --shadow-soft: 4px 5px 0 color-mix(in oklab, var(--color-ink) 85%, transparent);
 
   --motion-quick: 150ms;
   --motion-fast: 250ms;
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
-
 }
 
 @layer base {
@@ -54,16 +49,20 @@
 
   body {
     font-family: var(--font-sans);
-    background: var(--color-ink);
+    background: var(--color-bg);
     color: var(--color-fg);
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
+    overflow-x: hidden;
   }
 
   h1,
   h2,
   h3 {
     text-wrap: balance;
+    font-family: var(--font-display);
+    letter-spacing: 0.04em;
+    font-weight: 400;
   }
 
   p {
@@ -83,6 +82,8 @@
 
 @utility font-display {
   font-family: var(--font-display);
+  letter-spacing: 0.04em;
+  font-weight: 400;
 }
 
 @utility tabular {
@@ -90,93 +91,210 @@
 }
 
 @utility seal {
-  font-size: 0.7rem;
-  font-weight: 600;
-  letter-spacing: 0.28em;
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--color-accent);
 }
 
-.dusk-sky {
+@utility scrap {
+  background: var(--color-surface);
+  border: 3px solid var(--color-ink);
+  box-shadow: 3px 4px 0 var(--color-ink);
+}
+
+.scrap-field {
   position: fixed;
   inset: 0;
   z-index: 0;
   pointer-events: none;
   overflow: hidden;
+  background: var(--color-bg);
 }
 
-.dusk-sky__wash {
+.scrap-field__grain {
+  position: absolute;
+  inset: 0;
+  opacity: 0.22;
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      color-mix(in oklab, var(--color-ink) 8%, transparent) 3px
+    ),
+    radial-gradient(circle at 18% 22%, color-mix(in oklab, var(--color-ink) 10%, transparent), transparent 42%),
+    radial-gradient(circle at 82% 78%, color-mix(in oklab, var(--color-ok) 14%, transparent), transparent 46%);
+}
+
+.scrap-field__vignette {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse 90% 55% at 50% -8%, color-mix(in oklab, var(--color-sky) 70%, white 8%), transparent 62%),
-    radial-gradient(ellipse 50% 40% at 8% 18%, color-mix(in oklab, var(--color-dusk) 55%, transparent), transparent 70%),
-    linear-gradient(180deg, #2a3348 0%, #1a1520 42%, #12101a 100%);
+    radial-gradient(ellipse 78% 70% at 50% 46%, transparent 52%, var(--color-ink) 100%);
+  opacity: 0.55;
 }
 
-.dusk-sky__moon {
+.scrap-field__blot {
   position: absolute;
-  top: 7%;
-  right: 12%;
-  width: 88px;
-  height: 88px;
-  border-radius: 9999px;
-  background: radial-gradient(circle at 35% 35%, #f6ecdc, #e2c9a0 55%, #c9a06a 100%);
-  box-shadow: 0 0 60px 16px color-mix(in oklab, #f6ecdc 28%, transparent);
-  opacity: 0.7;
+  border-radius: 60% 40% 55% 45%;
+  background: var(--color-ink);
+  opacity: 0.88;
 }
 
-.dusk-sky__lantern {
-  position: absolute;
+.scrap-field__blot--tl {
   top: -8%;
   left: -6%;
-  width: 42vw;
-  height: 42vw;
-  border-radius: 9999px;
-  background: radial-gradient(circle, color-mix(in oklab, var(--color-accent) 38%, transparent), transparent 68%);
+  width: 28vw;
+  height: 22vw;
 }
 
-.dusk-sky__hill {
-  position: absolute;
-  left: -10%;
+.scrap-field__blot--tr {
+  top: -10%;
+  right: -8%;
+  width: 24vw;
+  height: 20vw;
+  border-radius: 40% 60% 35% 65%;
+}
+
+.scrap-field__blot--bl {
+  bottom: -12%;
+  left: -8%;
+  width: 34vw;
+  height: 18vw;
+}
+
+.scrap-field__blot--br {
+  bottom: -14%;
   right: -10%;
-  border-radius: 50% 50% 0 0;
+  width: 30vw;
+  height: 20vw;
 }
 
-.dusk-sky__hill--far {
-  bottom: -18%;
-  height: 42%;
-  background: radial-gradient(ellipse at 50% 0%, color-mix(in oklab, var(--color-moss) 55%, #1a2030), #152018);
-  opacity: 0.85;
-}
-
-.dusk-sky__hill--near {
-  bottom: -28%;
-  height: 38%;
-  background: radial-gradient(ellipse at 40% 0%, color-mix(in oklab, var(--color-ink) 40%, var(--color-moss)), #0e0c12);
-  opacity: 0.92;
-}
-
-.dusk-sky__mist {
-  position: absolute;
-  inset: auto 0 0;
-  height: 36%;
-  background: linear-gradient(180deg, transparent, color-mix(in oklab, var(--color-ink) 75%, transparent));
-}
-
-.dusk-sky__wave {
-  position: absolute;
-  inset: 0;
-  opacity: 0.14;
-  background-image: repeating-radial-gradient(
-    circle at 0 10px,
-    transparent 0,
-    transparent 11px,
-    color-mix(in oklab, var(--color-fg) 40%, transparent) 12px,
-    transparent 13px
+.banner {
+  display: inline-block;
+  padding: 0.28em 1.1em 0.22em;
+  background: var(--color-elevated);
+  border: 3px solid var(--color-ink);
+  box-shadow: 3px 3px 0 var(--color-ink);
+  transform: rotate(-1.2deg);
+  clip-path: polygon(
+    2% 18%,
+    8% 4%,
+    22% 12%,
+    38% 2%,
+    54% 10%,
+    70% 0,
+    86% 8%,
+    100% 4%,
+    98% 82%,
+    88% 100%,
+    72% 90%,
+    56% 100%,
+    40% 88%,
+    24% 100%,
+    10% 90%,
+    0 96%
   );
-  background-size: 48px 24px;
-  mix-blend-mode: soft-light;
+}
+
+.bubble {
+  position: relative;
+  background: var(--color-elevated);
+  border: 3px solid var(--color-ink);
+  border-radius: 18px 20px 20px 6px;
+  padding: 0.7rem 1rem;
+  box-shadow: 3px 3px 0 var(--color-ink);
+}
+
+.bubble::after {
+  content: "";
+  position: absolute;
+  left: 1.2rem;
+  bottom: -12px;
+  width: 16px;
+  height: 16px;
+  background: var(--color-elevated);
+  border-right: 3px solid var(--color-ink);
+  border-bottom: 3px solid var(--color-ink);
+  transform: rotate(45deg);
+}
+
+.bubble--right::after {
+  left: auto;
+  right: 1.4rem;
+}
+
+.tape {
+  position: relative;
+}
+
+.tape::before {
+  content: "";
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  width: 42%;
+  height: 14px;
+  transform: translateX(-50%) rotate(-2deg);
+  background: color-mix(in oklab, var(--color-warn) 55%, white);
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.party {
+  position: relative;
+  height: 16.5rem;
+  overflow: hidden;
+}
+
+.party__cat {
+  position: absolute;
+  bottom: 0;
+  width: 42%;
+}
+
+.party__cat:nth-child(1) {
+  left: -4%;
+  transform: rotate(-8deg);
+  z-index: 2;
+}
+
+.party__cat:nth-child(2) {
+  left: 12%;
+  bottom: 6%;
+  transform: rotate(5deg);
+  z-index: 3;
+}
+
+.party__cat:nth-child(3) {
+  left: 28%;
+  bottom: 0;
+  transform: rotate(-3deg);
+  z-index: 4;
+}
+
+.party__cat:nth-child(4) {
+  left: 44%;
+  bottom: 8%;
+  transform: rotate(7deg);
+  z-index: 3;
+}
+
+.party__cat:nth-child(5) {
+  left: 58%;
+  bottom: 2%;
+  transform: rotate(-5deg);
+  z-index: 2;
+}
+
+.party .bubble {
+  position: absolute;
+  top: 0.4rem;
+  right: 0.4rem;
+  z-index: 6;
+  max-width: 9.5rem;
 }
 
 @keyframes organ-land {
@@ -192,6 +310,31 @@
 
 .organ-land {
   animation: organ-land var(--motion-fast) var(--ease-out);
+}
+
+@media (min-width: 640px) {
+  .party {
+    height: 20rem;
+    overflow: visible;
+  }
+
+  .party__cat {
+    width: 38%;
+  }
+
+  .party__cat:nth-child(1) {
+    left: 0;
+  }
+
+  .party__cat:nth-child(5) {
+    left: 62%;
+  }
+
+  .party .bubble {
+    top: 0;
+    right: 0;
+    max-width: 14rem;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

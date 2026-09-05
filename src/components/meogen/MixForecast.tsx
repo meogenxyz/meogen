@@ -9,21 +9,21 @@ export function MixForecast({ dam, sire }: { dam: Cat; sire: Cat }) {
   const dt = traits(dam);
   const st = traits(sire);
   return (
-    <div className="mt-4 w-full max-w-sm rounded-lg border border-border bg-ink/40 p-3 text-left">
-      <p className="text-xs uppercase tracking-[0.18em] text-muted">Pairing</p>
+    <div className="mt-4 w-full max-w-sm scrap bg-elevated p-3 text-left">
+      <p className="font-display tracking-wide text-muted">Pairing</p>
       <ul className="mt-2 space-y-1.5">
         {f.organs.map((row) => (
           <li key={row.organ} className="flex items-center justify-between gap-2 text-sm">
             <span className="uppercase tracking-[0.14em] text-subtle">{row.organ}</span>
             <span className="flex items-center gap-2">
               <span
-                className="size-3 rounded-full border border-border"
+                className="size-3 rounded-full border-2 border-ink"
                 style={{ background: row.dam.hex }}
                 title={row.dam.name}
               />
               <span className="text-subtle">/</span>
               <span
-                className="size-3 rounded-full border border-border"
+                className="size-3 rounded-full border-2 border-ink"
                 style={{ background: row.sire.hex }}
                 title={row.sire.name}
               />

@@ -30,19 +30,23 @@ export function catPortraitSvg(cat: Cat): string {
   }).join("");
 
   const seals = [
-    chimera ? `<text x="24" y="36" fill="#f6ecdc" font-size="14" font-family="Georgia,serif" font-style="italic">chimera</text>` : "",
-    cat.mutant ? `<text x="24" y="54" fill="#d4563a" font-size="12" font-family="sans-serif" letter-spacing="2">MUTANT</text>` : "",
+    chimera
+      ? `<text x="28" y="40" fill="#14110e" font-size="18" font-family="Bangers, Impact, sans-serif">chimera</text>`
+      : "",
+    cat.mutant
+      ? `<text x="28" y="${chimera ? 64 : 40}" fill="#c44532" font-size="18" font-family="Bangers, Impact, sans-serif">MUTANT</text>`
+      : "",
   ].join("");
 
   return `<?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 460" width="420" height="460">
-  <rect width="420" height="460" fill="#12101a"/>
-  <rect x="18" y="18" width="384" height="424" rx="18" fill="#1e1a1c" stroke="#d4563a" stroke-width="3"/>
+  <rect width="420" height="460" fill="#e7decc"/>
+  <rect x="14" y="14" width="392" height="432" fill="#f4ead8" stroke="#14110e" stroke-width="4"/>
   ${parts}
   ${seals}
-  <text x="210" y="400" text-anchor="middle" fill="#f6ecdc" font-size="28" font-family="Georgia,serif" font-style="italic">${escapeXml(cat.name)}</text>
-  <text x="210" y="424" text-anchor="middle" fill="#b39a86" font-size="11" font-family="sans-serif" letter-spacing="2">GEN ${cat.gen}  N${t.nerve} M${t.mass} L${t.luck}</text>
-  <text x="210" y="442" text-anchor="middle" fill="#7d6a5c" font-size="9" font-family="monospace">${genomeHex(cat)}</text>
+  <text x="210" y="400" text-anchor="middle" fill="#14110e" font-size="32" font-family="Bangers, Impact, sans-serif">${escapeXml(cat.name)}</text>
+  <text x="210" y="424" text-anchor="middle" fill="#5c5348" font-size="12" font-family="Kalam, sans-serif">GEN ${cat.gen}  N${t.nerve} M${t.mass} L${t.luck}</text>
+  <text x="210" y="444" text-anchor="middle" fill="#8a7f72" font-size="9" font-family="monospace">${genomeHex(cat)}</text>
 </svg>`;
 }
 

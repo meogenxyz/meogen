@@ -23,16 +23,18 @@ export function CatCard({
   return (
     <article
       className={cn(
-        "rounded-xl border bg-surface text-left transition-colors duration-150",
-        selected ? "border-accent" : "border-border hover:border-border-strong",
+        "tape scrap text-left transition-transform duration-150",
+        selected ? "rotate-0 bg-elevated" : "hover:-rotate-1",
+        cat.mutant ? "outline outline-4 outline-offset-2 outline-accent" : "",
       )}
     >
       <button type="button" onClick={onPick} className="w-full p-3 text-left">
         <CatPortrait cat={cat} className="mx-auto w-full max-w-40" seal />
-        <p className="mt-2 font-display text-lg italic leading-tight text-balance">{cat.name}</p>
-        <p className="mt-0.5 text-xs uppercase tracking-[0.18em] text-muted">
+        <p className="mt-2 font-display text-2xl leading-tight tracking-wide text-balance">{cat.name}</p>
+        <p className="mt-0.5 text-xs uppercase tracking-[0.14em] text-muted">
           gen {cat.gen}
           {chimera ? " · chimera" : ""}
+          {cat.mutant ? " · mutant" : ""}
           {role ? ` · ${role}` : ""}
         </p>
         {line ? <p className="mt-0.5 text-xs text-subtle">{line}</p> : null}
@@ -45,11 +47,11 @@ export function CatCard({
         </div>
       </button>
       {onLine && (
-        <div className="border-t border-border px-3 py-2">
+        <div className="border-t-[3px] border-ink px-3 py-2">
           <button
             type="button"
             onClick={onLine}
-            className="min-h-11 w-full text-left text-xs uppercase tracking-[0.16em] text-subtle hover:text-fg"
+            className="min-h-11 w-full text-left font-display text-base tracking-wide text-subtle hover:text-fg"
           >
             Line
           </button>

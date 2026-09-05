@@ -12,7 +12,7 @@ export const Route = createRootRoute({
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: APP_NAME },
-      { name: "theme-color", content: "#12101a" },
+      { name: "theme-color", content: "#e7decc" },
       {
         name: "description",
         content: "Meogen. The gene that mews. Mix original cat sprites. Not Mewgenics.",

@@ -8,12 +8,12 @@ import { downloadCatSvg } from "@/lib/meogen/svg";
 
 function Kin({ cat, label }: { cat?: Cat; label: string }) {
   return (
-    <div className="rounded-lg border border-border bg-elevated/50 p-3">
-      <p className="text-xs uppercase tracking-[0.16em] text-muted">{label}</p>
+    <div className="scrap bg-elevated p-3">
+      <p className="font-display tracking-wide text-muted">{label}</p>
       {cat ? (
         <>
           <CatPortrait cat={cat} className="mx-auto mt-1 max-w-28" />
-          <p className="mt-1 text-center font-display italic">{cat.name}</p>
+          <p className="mt-1 text-center font-display text-lg tracking-wide">{cat.name}</p>
         </>
       ) : (
         <p className="mt-4 text-center text-sm text-subtle">—</p>
@@ -63,11 +63,11 @@ export function LineageSheet({
       aria-labelledby="line-title"
     >
       <div
-        className="max-h-[92dvh] w-full max-w-lg overflow-y-auto rounded-2xl border border-border bg-surface p-5 pt-8 shadow-soft"
+        className="max-h-[92dvh] w-full max-w-lg overflow-y-auto scrap bg-surface p-5 pt-8"
         onClick={(e) => e.stopPropagation()}
       >
-        <p className="seal">Line</p>
-        <h2 id="line-title" className="mt-1 font-display text-3xl italic text-balance">
+        <p className="banner font-display text-xl tracking-wide">Line</p>
+        <h2 id="line-title" className="mt-3 font-display text-4xl tracking-wide text-balance">
           {cat.name}
         </h2>
         <p className="mt-1 text-sm text-muted">

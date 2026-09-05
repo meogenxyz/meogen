@@ -4,20 +4,19 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 font-medium transition-[color,background-color,border-color,transform] duration-150 disabled:pointer-events-none disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60 active:scale-[0.98]",
+  "inline-flex items-center justify-center gap-2 font-display tracking-wide transition-[color,background-color,border-color,transform] duration-150 disabled:pointer-events-none disabled:opacity-40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60 active:scale-[0.98] border-[3px] border-ink",
   {
     variants: {
       variant: {
-        solid: "bg-fg text-bg hover:bg-accent hover:text-accent-fg",
-        accent: "bg-accent text-accent-fg hover:bg-fg hover:text-bg",
-        ghost: "bg-transparent text-fg hover:bg-elevated",
-        outline:
-          "border border-border bg-transparent text-fg hover:border-border-strong hover:bg-elevated",
+        solid: "bg-ink text-accent-fg hover:bg-accent hover:text-accent-fg",
+        accent: "bg-accent text-accent-fg hover:bg-ink",
+        ghost: "border-transparent bg-transparent text-fg hover:bg-elevated hover:border-ink",
+        outline: "bg-surface text-fg hover:bg-elevated",
       },
       size: {
         sm: "h-9 rounded-sm px-3 text-sm",
-        md: "h-11 rounded-md px-4 text-sm",
-        lg: "h-12 rounded-lg px-5 text-base",
+        md: "h-11 rounded-md px-4 text-base",
+        lg: "h-12 rounded-lg px-5 text-lg",
       },
     },
     defaultVariants: { variant: "solid", size: "md" },

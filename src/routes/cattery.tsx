@@ -92,23 +92,23 @@ function CatteryPage() {
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
-      <p className="seal text-muted">Cattery</p>
-      <h1 className="mt-2 font-display text-4xl italic text-balance">Mix a kit</h1>
+      <p className="seal">Cattery</p>
+      <h1 className="mt-2 font-display text-5xl tracking-wide text-balance">Mix a kit</h1>
       <p className="mt-3 max-w-xl text-pretty text-muted">
         Tap dam, tap sire, mix. Each organ rolls 50/50. Six percent gilt or wild coat.
       </p>
 
       <div className="mt-8 grid gap-4 md:grid-cols-3">
-        <div className="rounded-xl border border-border bg-surface/80 p-4">
-          <p className="text-xs uppercase tracking-[0.2em] text-muted">Dam</p>
+        <div className="scrap p-4">
+          <p className="font-display tracking-wide text-muted">Dam</p>
           {dam ? (
             <CatPortrait cat={dam} className="mx-auto mt-2 max-w-44" />
           ) : (
             <p className="mt-8 text-center text-sm text-subtle">Pick a queen</p>
           )}
-          <p className="mt-2 text-center font-display italic">{dam?.name ?? "—"}</p>
+          <p className="mt-2 text-center font-display text-2xl tracking-wide">{dam?.name ?? "—"}</p>
         </div>
-        <div className="flex flex-col items-center justify-center rounded-xl border border-accent/40 bg-elevated/70 p-4">
+        <div className="flex flex-col items-center justify-center scrap bg-elevated p-4">
           <Button variant="accent" size="lg" disabled={!readyMix || mixing} onClick={onMix}>
             {mixing ? "Mixing…" : "Mix gene"}
           </Button>
@@ -118,21 +118,21 @@ function CatteryPage() {
           )}
           {mixing && <p className="mt-3 text-center text-sm text-muted">Organs choosing a parent.</p>}
         </div>
-        <div className="rounded-xl border border-border bg-surface/80 p-4">
-          <p className="text-xs uppercase tracking-[0.2em] text-muted">Sire</p>
+        <div className="scrap p-4">
+          <p className="font-display tracking-wide text-muted">Sire</p>
           {sire ? (
             <CatPortrait cat={sire} className="mx-auto mt-2 max-w-44" />
           ) : (
             <p className="mt-8 text-center text-sm text-subtle">Pick a tom</p>
           )}
-          <p className="mt-2 text-center font-display italic">{sire?.name ?? "—"}</p>
+          <p className="mt-2 text-center font-display text-2xl tracking-wide">{sire?.name ?? "—"}</p>
         </div>
       </div>
 
       <div className="mt-10 flex flex-wrap items-end justify-between gap-4">
         <div>
-          <p className="seal text-muted">Clowder</p>
-          <h2 className="mt-1 font-display text-2xl italic">{ready ? cats.length : "—"} cats</h2>
+          <p className="seal">Clowder</p>
+          <h2 className="mt-1 font-display text-3xl tracking-wide">{ready ? cats.length : "—"} cats</h2>
         </div>
         <Button variant="ghost" size="sm" onClick={() => reset()}>
           Reset founders
@@ -145,8 +145,10 @@ function CatteryPage() {
             type="button"
             onClick={() => setDrawer(d.id)}
             className={cn(
-              "min-h-11 rounded-sm px-3 text-sm transition-colors duration-150",
-              drawer === d.id ? "bg-elevated text-fg" : "text-muted hover:text-fg",
+              "min-h-11 border-[3px] px-3 font-display tracking-wide transition-colors duration-150",
+              drawer === d.id
+                ? "border-ink bg-ink text-accent-fg"
+                : "border-transparent text-muted hover:border-ink hover:text-fg",
             )}
           >
             {d.label}

@@ -18,7 +18,7 @@ export function GeneStrip({ cat, showFrom }: { cat: Cat; showFrom?: boolean }) {
         return (
           <div key={organ} className="flex items-center gap-1.5">
             <span
-              className="size-3 rounded-full border border-border"
+              className="size-3 rounded-full border-2 border-ink"
               style={{ background: coat.hex }}
               title={`${organ} ${coat.name}`}
             />
