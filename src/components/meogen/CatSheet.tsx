@@ -21,7 +21,7 @@ export function CatSheet({
   return (
     <aside className="sheet scrap p-4">
       <p className="banner font-display text-xl tracking-wide">{cat.name}</p>
-      <p className="mt-2 text-sm text-muted">
+      <p className="mt-2 text-sm text-ink-soft">
         {epithet(cat)}
         {role ? ` · ${role}` : ""}
       </p>

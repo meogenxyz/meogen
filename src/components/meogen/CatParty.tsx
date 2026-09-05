@@ -27,9 +27,9 @@ export function CatParty({
               aria-pressed={selected}
               aria-label={`${cat.name}, ${epithet(cat)}`}
             >
+              <span className="tarot__title">{epithet(cat)}</span>
               <CatPortrait cat={cat} />
               <span className="plate mt-2">{cat.name}</span>
-              <span className="mt-1 text-center text-xs text-pretty text-muted">{epithet(cat)}</span>
             </button>
           );
         })}

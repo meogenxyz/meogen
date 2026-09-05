@@ -2,7 +2,6 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { CatParty } from "@/components/meogen/CatParty";
 import { CatPortrait } from "@/components/meogen/CatPortrait";
-import { Button } from "@/components/ui/button";
 import {
   epithet,
   FOUNDERS,
@@ -29,33 +28,19 @@ function Home() {
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-12">
-      <section className="grotto">
-        <div className="tray">
-          <p className="banner grotto__banner font-display tracking-wide">Meogen Cattery — New Mutants</p>
-          <CatParty cats={PARTY} pickedId={pickedId} onPick={setPickedId} />
-        </div>
-      </section>
-      <p className="mt-5 font-display text-xl tracking-wide text-muted">Click to pick a cat</p>
-      <p className="mt-1 max-w-lg text-pretty text-sm text-subtle">
-        Original mutants. Mix until one comes out wrong.
-      </p>
-      <div className="mt-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-        <div>
-          <p className="plate">{picked.name}</p>
-          <p className="mt-2 text-sm text-muted">{epithet(picked)}</p>
-        </div>
-        <div className="flex flex-wrap gap-3">
-          <Button variant="accent" size="lg" asChild>
-            <Link to="/cattery" search={{ dam: picked.id }}>
-              Mix a kit
-            </Link>
-          </Button>
-          <Button variant="outline" size="lg" asChild>
-            <Link to="/alley" search={{ cat: picked.id }}>
-              Send one out
-            </Link>
-          </Button>
-        </div>
+      <p className="banner grotto__banner font-display tracking-wide">Meogen Cattery — New Mutants</p>
+      <div className="mt-6">
+        <CatParty cats={PARTY} pickedId={pickedId} onPick={setPickedId} />
+      </div>
+      <div className="realms">
+        <Link to="/cattery" search={{ dam: picked.id }} className="realm realm--vat">
+          <span className="banner font-display tracking-wide">The Vat</span>
+          <span className="realm__hint">Mix {picked.name} into a kit</span>
+        </Link>
+        <Link to="/alley" search={{ cat: picked.id }} className="realm realm--rift">
+          <span className="banner font-display tracking-wide">The Alley</span>
+          <span className="realm__hint">Send {picked.name} out</span>
+        </Link>
       </div>
       {ready && (
         <p className="mt-5 text-sm tabular text-muted">
@@ -116,20 +101,6 @@ function Home() {
           })}
         </div>
       </section>
-
-      <ol className="mt-14 grid gap-4 sm:grid-cols-3">
-        {[
-          { n: "01", t: "Mix gene", d: "Dam and sire. Each organ rolls fifty-fifty." },
-          { n: "02", t: "Kit", d: "Six percent mutant. Chimera if the pelt splits." },
-          { n: "03", t: "Alley", d: "Forty-five seconds. Nerve leaps. Mass lives." },
-        ].map((step) => (
-          <li key={step.n} className="scrap p-4">
-            <p className="seal">{step.n}</p>
-            <h2 className="mt-2 font-display text-3xl tracking-wide">{step.t}</h2>
-            <p className="mt-1 text-sm text-pretty text-muted">{step.d}</p>
-          </li>
-        ))}
-      </ol>
       {ranked.length > 0 && (
         <section className="mt-14">
           <p className="banner font-display text-2xl tracking-wide">Alley marks</p>

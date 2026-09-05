@@ -2,15 +2,17 @@
 @import "tailwindcss";
 
 @theme {
-  --color-bg: #e7decc;
+  --color-bg: #1a1614;
+  --color-cave: #2c2622;
   --color-surface: #f4ead8;
   --color-elevated: #faf3e6;
-  --color-fg: #1c1814;
-  --color-muted: #5c5348;
-  --color-subtle: #8a7f72;
+  --color-fg: #f0e6d4;
+  --color-muted: #c2b6a4;
+  --color-subtle: #8e8478;
   --color-accent: #c44532;
   --color-accent-fg: #faf3e6;
   --color-ink: #14110e;
+  --color-ink-soft: #5c5348;
   --color-border: color-mix(in oklab, var(--color-ink) 22%, transparent);
   --color-border-strong: color-mix(in oklab, var(--color-ink) 55%, transparent);
   --color-ok: #5a6a4a;
@@ -102,6 +104,7 @@
   background: var(--color-surface);
   border: 3px solid var(--color-ink);
   box-shadow: 3px 4px 0 var(--color-ink);
+  color: var(--color-ink);
 }
 
 .scrap-field {
@@ -116,24 +119,24 @@
 .scrap-field__grain {
   position: absolute;
   inset: 0;
-  opacity: 0.22;
+  opacity: 0.28;
   background-image:
     repeating-linear-gradient(
       0deg,
       transparent,
       transparent 2px,
-      color-mix(in oklab, var(--color-ink) 8%, transparent) 3px
+      color-mix(in oklab, var(--color-fg) 6%, transparent) 3px
     ),
-    radial-gradient(circle at 18% 22%, color-mix(in oklab, var(--color-ink) 10%, transparent), transparent 42%),
-    radial-gradient(circle at 82% 78%, color-mix(in oklab, var(--color-ok) 14%, transparent), transparent 46%);
+    radial-gradient(circle at 18% 22%, color-mix(in oklab, var(--color-accent) 12%, transparent), transparent 42%),
+    radial-gradient(circle at 82% 78%, color-mix(in oklab, var(--color-ok) 10%, transparent), transparent 46%);
 }
 
 .scrap-field__vignette {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse 78% 70% at 50% 46%, transparent 52%, var(--color-ink) 100%);
-  opacity: 0.55;
+    radial-gradient(ellipse 78% 70% at 50% 46%, transparent 48%, var(--color-ink) 100%);
+  opacity: 0.72;
 }
 
 .scrap-field__blot {
@@ -206,6 +209,7 @@
   border-radius: 18px 20px 20px 6px;
   padding: 0.7rem 1rem;
   box-shadow: 3px 3px 0 var(--color-ink);
+  color: var(--color-ink);
 }
 
 .bubble::after {
@@ -236,7 +240,7 @@
   letter-spacing: 0.04em;
   font-size: 1.15rem;
   line-height: 1.1;
-  color: var(--color-fg);
+  color: var(--color-ink);
   white-space: nowrap;
 }
 
@@ -357,11 +361,10 @@
 .grotto {
   position: relative;
   overflow: hidden;
-  padding: 1.6rem 0.85rem 1.5rem;
-  background:
-    radial-gradient(ellipse 70% 55% at 50% 28%, color-mix(in oklab, var(--color-bg) 22%, var(--color-ink)), var(--color-ink));
-  border: 3px solid var(--color-ink);
-  box-shadow: 4px 6px 0 var(--color-ink);
+  padding: 1.2rem 0.5rem 0.4rem;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
 }
 
 .grotto__banner {
@@ -383,7 +386,7 @@
 }
 
 .tray .bubble {
-  color: var(--color-fg);
+  color: var(--color-ink);
 }
 
 @keyframes organ-land {
@@ -551,7 +554,7 @@
   background: var(--color-surface);
   border: 3px solid var(--color-ink);
   box-shadow: 3px 4px 0 var(--color-ink);
-  color: var(--color-fg);
+  color: var(--color-ink);
 }
 
 .nametag__face {
@@ -560,6 +563,133 @@
   overflow: hidden;
   border: 2px solid var(--color-ink);
   background: var(--color-elevated);
+}
+
+.tarot__title {
+  display: block;
+  min-height: 2.8em;
+  margin-bottom: 0.3rem;
+  font-family: var(--font-display);
+  font-size: clamp(0.62rem, 1.05vw, 0.86rem);
+  letter-spacing: 0.06em;
+  line-height: 1.15;
+  text-align: center;
+  color: var(--color-fg);
+}
+
+.realms {
+  display: grid;
+  gap: 0.75rem;
+  margin-top: 0.9rem;
+}
+
+.realm {
+  position: relative;
+  display: flex;
+  min-height: 12rem;
+  flex-direction: column;
+  justify-content: flex-end;
+  overflow: hidden;
+  padding: 0.85rem;
+  border: 3px solid var(--color-ink);
+  color: var(--color-fg);
+  text-decoration: none;
+}
+
+.realm--vat {
+  background: linear-gradient(
+    180deg,
+    color-mix(in oklab, var(--color-ok) 35%, var(--color-cave)),
+    var(--color-cave)
+  );
+}
+
+.realm--vat::before {
+  content: "";
+  position: absolute;
+  inset: 22% 12% 18%;
+  background:
+    repeating-conic-gradient(
+      var(--color-surface) 0% 25%,
+      color-mix(in oklab, var(--color-ink) 18%, var(--color-surface)) 0% 50%
+    )
+    50% / 28px 28px;
+  transform: perspective(320px) rotateX(52deg);
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.realm--rift {
+  background: linear-gradient(
+    180deg,
+    color-mix(in oklab, var(--color-muted) 22%, var(--color-ink)),
+    var(--color-ink)
+  );
+}
+
+.realm--rift::before {
+  content: "";
+  position: absolute;
+  inset: 18% 8% 12%;
+  border: 3px solid color-mix(in oklab, var(--color-fg) 22%, transparent);
+  border-radius: 42% 42% 10% 10%;
+  background: color-mix(in oklab, var(--color-fg) 8%, var(--color-ink));
+  opacity: 0.85;
+  pointer-events: none;
+}
+
+.realm .banner,
+.realm__hint {
+  position: relative;
+  z-index: 1;
+}
+
+.realm__hint {
+  margin-top: 0.4rem;
+  font-size: 0.9rem;
+  color: var(--color-muted);
+}
+
+.scrap .text-muted,
+.tray .text-muted,
+.polaroid .text-muted,
+.sheet .text-muted,
+.room .text-muted,
+.banner .text-muted,
+.nametag .text-muted,
+.bubble .text-muted,
+header .text-muted,
+.scrap.text-muted {
+  color: var(--color-ink-soft);
+}
+
+.scrap .text-fg,
+.tray .text-fg,
+.polaroid .text-fg,
+.sheet .text-fg,
+.banner .text-fg,
+.nametag .text-fg,
+.scrap.text-fg {
+  color: var(--color-ink);
+}
+
+.scrap .text-subtle,
+.tray .text-subtle,
+.polaroid .text-subtle,
+.sheet .text-subtle,
+.room .text-subtle,
+.nametag .text-subtle {
+  color: color-mix(in oklab, var(--color-ink) 55%, var(--color-surface));
+}
+
+@media (min-width: 640px) {
+  .realms {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .realm {
+    min-height: 14rem;
+  }
 }
 
 @media (min-width: 640px) {

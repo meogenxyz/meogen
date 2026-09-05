@@ -25,9 +25,9 @@ export function SiteShell({ children }: { children: ReactNode }) {
   return (
     <div className="relative min-h-dvh text-fg">
       <ScrapField />
-      <header className="sticky top-0 z-30 border-b-[3px] border-ink bg-surface/90">
+      <header className="sticky top-0 z-30 border-b-[3px] border-ink bg-surface/95 text-ink">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
-          <Link to="/" className="flex items-baseline gap-2">
+          <Link to="/" className="flex items-baseline gap-2 text-ink">
             <span className="inline-block size-3 rounded-sm border-2 border-ink bg-accent" aria-hidden />
             <span className="font-display text-2xl tracking-wide sm:text-3xl">Meogen</span>
             <span className="hidden seal sm:inline">gene</span>
@@ -43,7 +43,7 @@ export function SiteShell({ children }: { children: ReactNode }) {
                     "min-h-11 rounded-sm px-2.5 py-1.5 font-display tracking-wide transition-colors duration-150",
                     active
                       ? "bg-ink text-accent-fg"
-                      : "text-fg hover:bg-elevated",
+                      : "text-ink hover:bg-elevated",
                   )}
                 >
                   {item.label}
@@ -55,7 +55,7 @@ export function SiteShell({ children }: { children: ReactNode }) {
       </header>
       <main className="relative z-10">{children}</main>
       {pathname !== "/alley" && (
-        <footer className="relative z-10 border-t-[3px] border-ink bg-surface/80">
+        <footer className="relative z-10 border-t-[3px] border-ink bg-ink/70">
           <div className="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-8 text-sm text-muted sm:flex-row sm:items-center sm:justify-between sm:px-6">
             <div>
               <p className="font-display text-xl tracking-wide text-fg">{MEOGEN.tagline}</p>

@@ -10,8 +10,8 @@ const buttonVariants = cva(
       variant: {
         solid: "bg-ink text-accent-fg hover:bg-accent hover:text-accent-fg",
         accent: "bg-accent text-accent-fg hover:bg-ink",
-        ghost: "border-transparent bg-transparent text-fg hover:bg-elevated hover:border-ink",
-        outline: "bg-surface text-fg hover:bg-elevated",
+        ghost: "border-transparent bg-transparent text-fg hover:text-accent",
+        outline: "bg-surface text-ink hover:bg-elevated",
       },
       size: {
         sm: "h-9 rounded-sm px-3 text-sm",

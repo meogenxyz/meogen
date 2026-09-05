@@ -13,7 +13,7 @@ Not Mewgenics.
 
 | Page | What |
 |---|---|
-| Lab | Six mutant cards. Pick one. Mix with a founder |
+| Lab | Cave. Six titled mutants. The Vat / The Alley |
 | Cattery | Room of cats. Paper sheet. Mix gene |
 | Alley | 45s leap. Nerve / mass / luck |
 | Codex | The mix + Nursery notes |

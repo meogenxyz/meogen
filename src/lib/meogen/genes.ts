@@ -191,7 +191,7 @@ export const EPITHET: Record<string, string> = {
   lab_201: "The Alchemist Calico",
   lab_202: "The Two-Headed Siamese",
   lab_203: "The Cyber-Cat",
-  lab_204: "The Winged Cat",
+  lab_204: "The Winged Cat-Demon",
   lab_205: "The Rune-Cat",
   lab_206: "The Patchwork Scavenger",
 };

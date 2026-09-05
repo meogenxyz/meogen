@@ -178,11 +178,11 @@ export function AlleyRun({
     };
 
     const drawWorld = (gy: number, scrollDist: number) => {
-      ctx.fillStyle = "#e7decc";
+      ctx.fillStyle = "#1a1614";
       ctx.fillRect(0, 0, w, h);
       const sky = ctx.createLinearGradient(0, 0, 0, gy);
-      sky.addColorStop(0, "#c9bfa8");
-      sky.addColorStop(1, "#e7decc");
+      sky.addColorStop(0, "#2c2622");
+      sky.addColorStop(1, "#1a1614");
       ctx.fillStyle = sky;
       ctx.fillRect(0, 0, w, gy);
 
@@ -191,7 +191,7 @@ export function AlleyRun({
       for (let y = gy; y < h + tile; y += tile) {
         for (let x = -scroll; x < w + tile; x += tile) {
           const col = (Math.floor((x + scroll) / tile) + Math.floor((y - gy) / tile)) % 2;
-          ctx.fillStyle = col ? "#d9cfb8" : "#e7decc";
+          ctx.fillStyle = col ? "#3a342e" : "#2c2622";
           ctx.fillRect(x, y, tile, tile);
         }
       }
@@ -437,8 +437,8 @@ export function AlleyRun({
             <CatPortrait cat={cat} />
           </div>
           <div>
-            <p className="font-display text-xl tracking-wide text-fg">{cat.name}</p>
-            <p ref={hudRef} className="tabular text-muted">
+            <p className="font-display text-xl tracking-wide text-ink">{cat.name}</p>
+            <p ref={hudRef} className="tabular text-ink-soft">
               Leap to go
             </p>
           </div>
@@ -446,13 +446,13 @@ export function AlleyRun({
       </div>
       {waiting && !over && (
         <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-          <p className="banner font-display text-2xl tracking-wide text-fg">Leap to go</p>
+          <p className="banner font-display text-2xl tracking-wide text-ink">Leap to go</p>
         </div>
       )}
       {over && (
         <div className="absolute inset-0 flex flex-col items-center justify-center bg-ink/40">
           <div className="scrap bg-surface p-6 text-center">
-            <p className="font-display text-4xl tracking-wide tabular text-fg">{over.score}</p>
+            <p className="font-display text-4xl tracking-wide tabular text-ink">{over.score}</p>
             <p className="mt-1 text-sm text-muted">{markLine}</p>
             <Button variant="accent" className="mt-4" onClick={onRetry}>
               Run again
