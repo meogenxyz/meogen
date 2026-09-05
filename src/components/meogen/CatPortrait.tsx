@@ -32,7 +32,7 @@ export function CatPortrait({
   const framed = Boolean(cat.art && visible.length >= ORGANS.length);
 
   return (
-    <div className={cn("relative overflow-hidden", framed ? "aspect-[3/4]" : "aspect-square", className)}>
+    <div className={cn("relative aspect-square overflow-hidden", className)}>
       <img alt="" src={src} className="pointer-events-none mx-auto block h-full w-full object-cover organ-land" />
       {seal && cat.mutant && !framed && visible.length >= ORGANS.length && (
         <span className="absolute right-0 top-0 z-40 border-[3px] border-ink bg-accent px-1.5 py-0 font-display text-sm tracking-wide text-accent-fg">

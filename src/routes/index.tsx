@@ -29,17 +29,16 @@ function Home() {
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-12">
-      <p className="banner font-display text-3xl tracking-wide sm:text-5xl">The Lab — New Mutants</p>
-      <p className="mt-4 font-display text-xl tracking-wide text-muted">Click to pick a cat</p>
+      <section className="grotto">
+        <div className="tray">
+          <p className="banner grotto__banner font-display tracking-wide">Meogen Cattery — New Mutants</p>
+          <CatParty cats={PARTY} pickedId={pickedId} onPick={setPickedId} />
+        </div>
+      </section>
+      <p className="mt-5 font-display text-xl tracking-wide text-muted">Click to pick a cat</p>
       <p className="mt-1 max-w-lg text-pretty text-sm text-subtle">
-        Not Mewgenics. Original mutants. Mix until one comes out wrong.
+        Original mutants. Mix until one comes out wrong.
       </p>
-      <p className="bubble mt-4 max-w-lg text-base">
-        Six came out of the vat. Keep the wrong ones.
-      </p>
-      <div className="mt-6">
-        <CatParty cats={PARTY} pickedId={pickedId} onPick={setPickedId} />
-      </div>
       <div className="mt-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <p className="plate">{picked.name}</p>

@@ -299,44 +299,91 @@
 }
 
 .mutant-row {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.75rem;
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  padding-bottom: 0.2rem;
 }
 
 .tarot {
   display: flex;
+  flex: 0 0 46%;
   flex-direction: column;
   align-items: center;
   margin: 0;
-  padding: 0.4rem 0.4rem 0.65rem;
-  background: var(--color-elevated);
-  border: 3px solid var(--color-ink);
-  box-shadow: 3px 4px 0 var(--color-ink);
+  padding: 0.2rem;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
   color: inherit;
-  transform: rotate(-0.8deg);
   transition: transform var(--motion-fast) var(--ease-out);
 }
 
-.tarot:nth-child(even) {
-  transform: rotate(1deg);
-}
-
+.tarot:nth-child(even),
 .tarot:nth-child(3n) {
-  transform: rotate(-0.4deg);
+  transform: none;
 }
 
 .tarot.is-picked {
-  transform: rotate(0) scale(1.03);
-  outline: 4px solid var(--color-accent);
+  transform: none;
+  outline: 3px solid var(--color-accent);
   outline-offset: 3px;
   z-index: 2;
-  background: var(--color-surface);
+  background: transparent;
 }
 
 .tarot:focus-visible {
   outline: 3px solid var(--color-accent);
   outline-offset: 4px;
+}
+
+@media (min-width: 640px) {
+  .tarot {
+    flex-basis: 30%;
+  }
+}
+
+@media (min-width: 1024px) {
+  .mutant-row {
+    overflow: visible;
+  }
+
+  .tarot {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+}
+
+.grotto {
+  position: relative;
+  overflow: hidden;
+  padding: 1.6rem 0.85rem 1.5rem;
+  background:
+    radial-gradient(ellipse 70% 55% at 50% 28%, color-mix(in oklab, var(--color-bg) 22%, var(--color-ink)), var(--color-ink));
+  border: 3px solid var(--color-ink);
+  box-shadow: 4px 6px 0 var(--color-ink);
+}
+
+.grotto__banner {
+  position: relative;
+  z-index: 2;
+  display: block;
+  width: fit-content;
+  max-width: calc(100% - 1rem);
+  margin: -0.15rem auto 0.85rem;
+  font-size: clamp(1.35rem, 4vw, 2.5rem);
+}
+
+.tray {
+  position: relative;
+  z-index: 2;
+  padding: 0.85rem 0.5rem 0.75rem;
+  background: var(--color-surface);
+  border: 3px solid var(--color-ink);
+}
+
+.tray .bubble {
+  color: var(--color-fg);
 }
 
 @keyframes organ-land {
@@ -352,19 +399,6 @@
 
 .organ-land {
   animation: organ-land var(--motion-fast) var(--ease-out);
-}
-
-@media (min-width: 640px) {
-  .mutant-row {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 1rem;
-  }
-}
-
-@media (min-width: 1024px) {
-  .mutant-row {
-    grid-template-columns: repeat(6, minmax(0, 1fr));
-  }
 }
 
 .stat-row {
