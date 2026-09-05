@@ -7,10 +7,16 @@ export const Route = createFileRoute("/docs")({
 
 function Codex() {
   return (
-    <div className="mx-auto max-w-2xl px-4 py-12 sm:px-6">
+    <div className="mx-auto max-w-2xl overflow-x-hidden px-4 py-12 sm:px-6">
       <p className="banner font-display text-3xl tracking-wide sm:text-4xl">The Codex</p>
       <p className="mt-4 font-display text-4xl tracking-wide">How the mix works</p>
-      <div className="scrap mt-8 space-y-8 bg-surface p-5 text-pretty sm:p-8">
+      <div className="mt-6 grid items-start gap-6 lg:grid-cols-[13rem_minmax(0,1fr)]">
+        <img
+          src="/scenes/codex.jpg"
+          alt="Four organs on a sitting cat — head, body, tail, legs."
+          className="w-full border-[3px] border-ink shadow-[3px_4px_0_var(--color-ink)]"
+        />
+        <div className="scrap space-y-8 bg-surface p-5 text-pretty sm:p-8">
         <section>
           <h2 className="font-display text-2xl tracking-wide text-ink">Four organs</h2>
           <p className="mt-2">
@@ -53,7 +59,7 @@ function Codex() {
             Packed into a uint256. Named mutants keep their illustrated card. Mixed kits draw a
             sitting cat from the genome. The contract later mints a seal of the same genome.
           </p>
-          <pre className="mt-3 overflow-x-auto border-[3px] border-ink bg-ink p-3 font-mono text-xs text-accent-fg">
+          <pre className="mt-3 w-full max-w-full overflow-x-auto border-[3px] border-ink bg-ink p-3 font-mono text-xs text-accent-fg">
             {`byte  0     1     2     3     4      5       6–13
       head  body  tail  legs  gen    flags   entropy
 flags bit 0 mutant · bit 1 chimera`}
@@ -117,6 +123,7 @@ flags bit 0 mutant · bit 1 chimera`}
             Vat on Robinhood Chain. Token after kittens travel. No merkle on day one. Not Mewgenics.
           </p>
         </section>
+      </div>
       </div>
       <p className="mt-10 flex gap-4">
         <Link to="/cattery" className="text-accent underline-offset-4 hover:underline">

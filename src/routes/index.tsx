@@ -29,7 +29,7 @@ function Home() {
   return (
     <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-12">
       <p className="banner grotto__banner font-display tracking-wide">Meogen Cattery — New Mutants</p>
-      <div className="mt-6">
+      <div className="cave-stage mt-6">
         <CatParty cats={PARTY} pickedId={pickedId} onPick={setPickedId} />
       </div>
       <div className="realms">

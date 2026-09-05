@@ -38,6 +38,13 @@ function AlleyPage() {
         the clock waits.
       </p>
       {!cat && (
+        <img
+          src="/scenes/alley.jpg"
+          alt="The alley cave."
+          className="mt-6 aspect-[16/7] w-full border-[3px] border-ink object-cover"
+        />
+      )}
+      {!cat && (
         <p className="mt-4 font-display text-xl tracking-wide text-muted">Click to pick a cat</p>
       )}
 

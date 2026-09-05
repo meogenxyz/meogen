@@ -17,12 +17,6 @@ export function CatRoom({
 }) {
   return (
     <div className="room" role="list">
-      <div className="room__wall" aria-hidden>
-        <span className="room__hang" />
-        <span className="room__hang room__hang--two" />
-        <span className="room__plant" />
-      </div>
-      <div className="room__floor" aria-hidden />
       <div className="room__cats">
         {cats.map((cat) => {
           const role = cat.id === damId ? "dam" : cat.id === sireId ? "sire" : null;
