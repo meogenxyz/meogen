@@ -15,8 +15,7 @@ export const Route = createRootRoute({
       { name: "theme-color", content: "#12101a" },
       {
         name: "description",
-        content:
-          "Meogen. The gene that mews. Mix original cat sprites. Not Mewgenics.",
+        content: "Meogen. The gene that mews. Mix original cat sprites. Not Mewgenics.",
       },
     ],
     links: [

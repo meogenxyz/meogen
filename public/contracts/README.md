@@ -1,14 +1,22 @@
-# Catris helpers — download & paste into Remix
+# MeogenNursery — Remix notes
 
-Compiler: Solidity **0.8.24**, optimization **200** runs. Network: Robinhood Chain **4663**.
+Compiler **0.8.24**, optimizer **200 runs**, network Robinhood **4663**.
 
-1. Deploy `CatrisVault.sol` (The Bowl) with constructor `_teamWallet` (Whiskers).
-2. Deploy `CatrisBoard.sol` (The Well) — no args.
-3. Bowl: `setBot(keeperEOA)` · Well: `setBot(keeperEOA)`, `setVault(BOWL_CA)`.
-4. Launch on [letscash.fun/launch](https://letscash.fun/launch): name Catris, symbol CATRIS, pair ETH.
-5. Hand the creator stream to the **Bowl** (`updateCreator(poolId, BOWL_CA)`).
-6. Bowl: `setPoolId(poolId)`, `setTokenCA(TOKEN_CA)`.
+Do not deploy until a Bowl address exists. Mix fee must never land on an EOA.
 
-Rooms inside the Bowl: Pounce (epoch prize) / Cream (holder drip) / Whiskers (crew).
+## Constructor
 
-Playbook: `/house` and `/docs`. Keeper: `/keeper/epoch-bot.mjs`.
+```
+MeogenNursery(bowl)
+```
+
+`bowl` is a vault contract, not a personal wallet.
+
+## After deploy
+
+1. Verify on Blockscout.
+2. `mintFounder()` from a test wallet (cap 500).
+3. `mix(dam, sire)` with `mixFee` (default 0.0003 ETH) to Bowl.
+4. `tokenURI(id)` returns a genome seal SVG. Overflowing sprites stay on the site.
+
+Site cats are local until this is live. Token ticker comes later — after kittens travel.

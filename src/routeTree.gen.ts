@@ -11,16 +11,8 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AlleyRouteImport } from './routes/alley'
-import { Route as ArenaRouteImport } from './routes/arena'
 import { Route as CatteryRouteImport } from './routes/cattery'
 import { Route as DocsRouteImport } from './routes/docs'
-import { Route as HouseRouteImport } from './routes/house'
-import { Route as PlayRouteImport } from './routes/play'
-import { Route as TreasuryRouteImport } from './routes/treasury'
-import { Route as ApiKeeperCreamProofRouteImport } from './routes/api/keeper/cream-proof'
-import { Route as ApiKeeperStatusRouteImport } from './routes/api/keeper/status'
-import { Route as ApiKeeperSubmitScoreRouteImport } from './routes/api/keeper/submit-score'
-import { Route as ApiKeeperTickRouteImport } from './routes/api/keeper/tick'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -30,11 +22,6 @@ const IndexRoute = IndexRouteImport.update({
 const AlleyRoute = AlleyRouteImport.update({
   id: '/alley',
   path: '/alley',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ArenaRoute = ArenaRouteImport.update({
-  id: '/arena',
-  path: '/arena',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CatteryRoute = CatteryRouteImport.update({
@@ -47,143 +34,39 @@ const DocsRoute = DocsRouteImport.update({
   path: '/docs',
   getParentRoute: () => rootRouteImport,
 } as any)
-const HouseRoute = HouseRouteImport.update({
-  id: '/house',
-  path: '/house',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PlayRoute = PlayRouteImport.update({
-  id: '/play',
-  path: '/play',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const TreasuryRoute = TreasuryRouteImport.update({
-  id: '/treasury',
-  path: '/treasury',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiKeeperCreamProofRoute = ApiKeeperCreamProofRouteImport.update({
-  id: '/api/keeper/cream-proof',
-  path: '/api/keeper/cream-proof',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiKeeperStatusRoute = ApiKeeperStatusRouteImport.update({
-  id: '/api/keeper/status',
-  path: '/api/keeper/status',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiKeeperSubmitScoreRoute = ApiKeeperSubmitScoreRouteImport.update({
-  id: '/api/keeper/submit-score',
-  path: '/api/keeper/submit-score',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiKeeperTickRoute = ApiKeeperTickRouteImport.update({
-  id: '/api/keeper/tick',
-  path: '/api/keeper/tick',
-  getParentRoute: () => rootRouteImport,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/alley': typeof AlleyRoute
-  '/arena': typeof ArenaRoute
   '/cattery': typeof CatteryRoute
   '/docs': typeof DocsRoute
-  '/house': typeof HouseRoute
-  '/play': typeof PlayRoute
-  '/treasury': typeof TreasuryRoute
-  '/api/keeper/cream-proof': typeof ApiKeeperCreamProofRoute
-  '/api/keeper/status': typeof ApiKeeperStatusRoute
-  '/api/keeper/submit-score': typeof ApiKeeperSubmitScoreRoute
-  '/api/keeper/tick': typeof ApiKeeperTickRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/alley': typeof AlleyRoute
-  '/arena': typeof ArenaRoute
   '/cattery': typeof CatteryRoute
   '/docs': typeof DocsRoute
-  '/house': typeof HouseRoute
-  '/play': typeof PlayRoute
-  '/treasury': typeof TreasuryRoute
-  '/api/keeper/cream-proof': typeof ApiKeeperCreamProofRoute
-  '/api/keeper/status': typeof ApiKeeperStatusRoute
-  '/api/keeper/submit-score': typeof ApiKeeperSubmitScoreRoute
-  '/api/keeper/tick': typeof ApiKeeperTickRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/alley': typeof AlleyRoute
-  '/arena': typeof ArenaRoute
   '/cattery': typeof CatteryRoute
   '/docs': typeof DocsRoute
-  '/house': typeof HouseRoute
-  '/play': typeof PlayRoute
-  '/treasury': typeof TreasuryRoute
-  '/api/keeper/cream-proof': typeof ApiKeeperCreamProofRoute
-  '/api/keeper/status': typeof ApiKeeperStatusRoute
-  '/api/keeper/submit-score': typeof ApiKeeperSubmitScoreRoute
-  '/api/keeper/tick': typeof ApiKeeperTickRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths:
-    | '/'
-    | '/alley'
-    | '/arena'
-    | '/cattery'
-    | '/docs'
-    | '/house'
-    | '/play'
-    | '/treasury'
-    | '/api/keeper/cream-proof'
-    | '/api/keeper/status'
-    | '/api/keeper/submit-score'
-    | '/api/keeper/tick'
+  fullPaths: '/' | '/alley' | '/cattery' | '/docs'
   fileRoutesByTo: FileRoutesByTo
-  to:
-    | '/'
-    | '/alley'
-    | '/arena'
-    | '/cattery'
-    | '/docs'
-    | '/house'
-    | '/play'
-    | '/treasury'
-    | '/api/keeper/cream-proof'
-    | '/api/keeper/status'
-    | '/api/keeper/submit-score'
-    | '/api/keeper/tick'
-  id:
-    | '__root__'
-    | '/'
-    | '/alley'
-    | '/arena'
-    | '/cattery'
-    | '/docs'
-    | '/house'
-    | '/play'
-    | '/treasury'
-    | '/api/keeper/cream-proof'
-    | '/api/keeper/status'
-    | '/api/keeper/submit-score'
-    | '/api/keeper/tick'
+  to: '/' | '/alley' | '/cattery' | '/docs'
+  id: '__root__' | '/' | '/alley' | '/cattery' | '/docs'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AlleyRoute: typeof AlleyRoute
-  ArenaRoute: typeof ArenaRoute
   CatteryRoute: typeof CatteryRoute
   DocsRoute: typeof DocsRoute
-  HouseRoute: typeof HouseRoute
-  PlayRoute: typeof PlayRoute
-  TreasuryRoute: typeof TreasuryRoute
-  ApiKeeperCreamProofRoute: typeof ApiKeeperCreamProofRoute
-  ApiKeeperStatusRoute: typeof ApiKeeperStatusRoute
-  ApiKeeperSubmitScoreRoute: typeof ApiKeeperSubmitScoreRoute
-  ApiKeeperTickRoute: typeof ApiKeeperTickRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -202,13 +85,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AlleyRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/arena': {
-      id: '/arena'
-      path: '/arena'
-      fullPath: '/arena'
-      preLoaderRoute: typeof ArenaRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/cattery': {
       id: '/cattery'
       path: '/cattery'
@@ -223,71 +99,14 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DocsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/house': {
-      id: '/house'
-      path: '/house'
-      fullPath: '/house'
-      preLoaderRoute: typeof HouseRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/play': {
-      id: '/play'
-      path: '/play'
-      fullPath: '/play'
-      preLoaderRoute: typeof PlayRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/treasury': {
-      id: '/treasury'
-      path: '/treasury'
-      fullPath: '/treasury'
-      preLoaderRoute: typeof TreasuryRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/keeper/cream-proof': {
-      id: '/api/keeper/cream-proof'
-      path: '/api/keeper/cream-proof'
-      fullPath: '/api/keeper/cream-proof'
-      preLoaderRoute: typeof ApiKeeperCreamProofRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/keeper/status': {
-      id: '/api/keeper/status'
-      path: '/api/keeper/status'
-      fullPath: '/api/keeper/status'
-      preLoaderRoute: typeof ApiKeeperStatusRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/keeper/submit-score': {
-      id: '/api/keeper/submit-score'
-      path: '/api/keeper/submit-score'
-      fullPath: '/api/keeper/submit-score'
-      preLoaderRoute: typeof ApiKeeperSubmitScoreRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/keeper/tick': {
-      id: '/api/keeper/tick'
-      path: '/api/keeper/tick'
-      fullPath: '/api/keeper/tick'
-      preLoaderRoute: typeof ApiKeeperTickRouteImport
-      parentRoute: typeof rootRouteImport
-    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AlleyRoute: AlleyRoute,
-  ArenaRoute: ArenaRoute,
   CatteryRoute: CatteryRoute,
   DocsRoute: DocsRoute,
-  HouseRoute: HouseRoute,
-  PlayRoute: PlayRoute,
-  TreasuryRoute: TreasuryRoute,
-  ApiKeeperCreamProofRoute: ApiKeeperCreamProofRoute,
-  ApiKeeperStatusRoute: ApiKeeperStatusRoute,
-  ApiKeeperSubmitScoreRoute: ApiKeeperSubmitScoreRoute,
-  ApiKeeperTickRoute: ApiKeeperTickRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import { Link, useRouterState } from "@tanstack/react-router";
 import { GardenSky } from "@/components/layout/GardenSky";
 import { MEOGEN } from "@/lib/meogen/links";
+import { useCatteryReady } from "@/lib/meogen/store";
 import { cn } from "@/lib/utils";
 
 const NAV = [
@@ -20,6 +21,7 @@ const SOCIAL = [
 
 export function SiteShell({ children }: { children: ReactNode }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
+  useCatteryReady();
   return (
     <div className="relative min-h-dvh text-fg">
       <GardenSky />
@@ -54,7 +56,7 @@ export function SiteShell({ children }: { children: ReactNode }) {
         <footer className="relative z-10 border-t border-border bg-ink/40">
           <div className="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-8 text-sm text-muted sm:flex-row sm:items-center sm:justify-between sm:px-6">
             <div>
-              <p className="font-display italic text-fg">The gene that mews.</p>
+              <p className="font-display italic text-fg">{MEOGEN.tagline}</p>
               <p className="mt-1">Not Mewgenics. Original mix. Head, body, tail, legs.</p>
             </div>
             <nav className="flex flex-wrap items-center gap-x-4 gap-y-1">

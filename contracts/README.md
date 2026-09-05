@@ -1,59 +1,22 @@
-# Catris contracts — Robinhood Chain 4663
+# MeogenNursery — Remix notes
 
-Remix-ready Solidity **0.8.24**, 200 runs. No OpenZeppelin imports.
+Compiler **0.8.24**, optimizer **200 runs**, network Robinhood **4663**.
 
-## Opening pair
+Do not deploy until a Bowl address exists. Mix fee must never land on an EOA.
 
-| Room | File | Role |
-|---|---|---|
-| The Bowl | `CatrisVault.sol` | Creator-stream recipient. Splits Pounce / Cream / Whiskers. |
-| The Well | `CatrisBoard.sol` | 15-minute on-chain scoreboard. Keeper submits; players pay no gas. |
-
-Pounce, Cream, and Whiskers are buckets on the Bowl — not separate deploys.
-
-`CatrisTreasury.sol`, `CatrisArena.sol`, and `CatrisRewards.sol` are the earlier weekly PONS split. Do **not** deploy them.
-
-## Flow
+## Constructor
 
 ```
-letscash.fun  (Uniswap v4, LP locked, creator stream on the hook)
-        │
-        │  updateCreator(poolId, Bowl)   ← never an EOA
-        ▼
-letscash hook     0x75A54357D9C78a2Db19004a5FDc76c50F9242AEC
-        │  Bowl.harvest() → hook.claim(poolId)
-        ▼
-CatrisVault
-        ├── Pounce    prizeWei     epoch winner (capped)
-        ├── Cream     dripWei      holders via merkle proof
-        └── Whiskers  teamWei      teamWallet.withdrawTeam()
+MeogenNursery(bowl)
 ```
 
-Hardening:
+`bowl` is a vault contract, not a personal wallet.
 
-- empty hook tab does not revert
-- `nonReentrant` on prize, drip, team
-- two-step `transferOwnership` / `acceptOwnership`
-- scores are EIP-191 `personal_sign`, verified in the keeper
+## After deploy
 
-## Remix order
+1. Verify on Blockscout.
+2. `mintFounder()` from a test wallet (cap 500).
+3. `mix(dam, sire)` with `mixFee` (default 0.0003 ETH) to Bowl.
+4. `tokenURI(id)` returns a genome seal SVG. Overflowing sprites stay on the site.
 
-1. `CatrisVault(whiskersWallet)` → Bowl
-2. `CatrisBoard()` → Well
-3. Bowl: `setBot(keeperEOA)`, `setMetadata("https://catris.xyz", "catrisXYZ", "https://github.com/catrisXYZ", "")`
-4. Well: `setBot(keeperEOA)`, `setVault(BOWL_CA)`
-5. Launch **CATRIS** on [letscash.fun](https://letscash.fun/launch)
-   - Name `Catris`, symbol `CATRIS`, pair ETH
-   - Image `https://www.catris.xyz/token-logo.jpg`
-   - Then `updateCreator(poolId, BOWL_CA)`
-6. Bowl: `setPoolId(poolId)`, `setTokenCA(TOKEN_CA)`
-7. Site env: `VITE_VAULT_CA`, `VITE_BOARD_CA`, `VITE_TOKEN_CA`, `VITE_KEEPER_URL`
-
-RPC: `https://rpc.mainnet.chain.robinhood.com`  
-Explorer: https://robinhoodchain.blockscout.com  
-Factory: `0x5bd1Fbe78a78fe8236fa00CF48fbEBA74ae34661`  
-Hook: `0x75A54357D9C78a2Db19004a5FDc76c50F9242AEC`
-
-Keeper: `/public/keeper/epoch-bot.mjs`. Fund ~0.1 ETH for gas.
-
-If you launched with an EOA as creator, that EOA calls `hook.updateCreator(poolId, bowl)`, then send any already-claimed ETH to the Bowl (`receive` splits).
+Site cats are local until this is live. Token ticker comes later — after kittens travel.

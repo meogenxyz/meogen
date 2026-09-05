@@ -1,15 +1,17 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { CatCard } from "@/components/meogen/CatCard";
+import { CatCard, catLine } from "@/components/meogen/CatCard";
 import { CatPortrait } from "@/components/meogen/CatPortrait";
+import { MixReveal } from "@/components/meogen/MixReveal";
 import { Button } from "@/components/ui/button";
-import { useCattery } from "@/lib/meogen/store";
+import { useCattery, useCatteryReady } from "@/lib/meogen/store";
 
 export const Route = createFileRoute("/cattery")({
   component: CatteryPage,
 });
 
 function CatteryPage() {
+  const ready = useCatteryReady();
   const cats = useCattery((s) => s.cats);
   const bench = useCattery((s) => s.bench);
   const lastBorn = useCattery((s) => s.lastBorn);
@@ -18,36 +20,29 @@ function CatteryPage() {
   const breed = useCattery((s) => s.breed);
   const setMixing = useCattery((s) => s.setMixing);
   const reset = useCattery((s) => s.reset);
-  const navigate = Route.useNavigate();
-  const [note, setNote] = useState<string | null>(null);
+  const [showReveal, setShowReveal] = useState(false);
 
   const dam = cats.find((c) => c.id === bench.damId) ?? null;
   const sire = cats.find((c) => c.id === bench.sireId) ?? null;
   const born = cats.find((c) => c.id === lastBorn) ?? null;
-  const ready = Boolean(dam && sire && dam.id !== sire.id);
+  const readyMix = Boolean(dam && sire && dam.id !== sire.id);
 
   const onMix = () => {
-    if (!ready || mixing) return;
-    setNote(null);
+    if (!readyMix || mixing) return;
+    setShowReveal(false);
     setMixing(true);
     window.setTimeout(() => {
-      const kitten = breed();
+      breed();
       setMixing(false);
-      if (kitten) {
-        setNote(
-          kitten.mutant
-            ? `${kitten.name} arrived. A gilt mutant.`
-            : `${kitten.name} arrived. Gen ${kitten.gen}.`,
-        );
-      }
+      setShowReveal(true);
     }, 900);
   };
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
       <p className="seal text-muted">Cattery</p>
-      <h1 className="mt-2 font-display text-4xl italic">Mix a litter</h1>
-      <p className="mt-3 max-w-xl text-muted">
+      <h1 className="mt-2 font-display text-4xl italic text-balance">Mix a litter</h1>
+      <p className="mt-3 max-w-xl text-pretty text-muted">
         Tap dam, tap sire, mix. Each organ rolls 50/50. Six percent gilt or wild coat.
       </p>
 
@@ -62,21 +57,11 @@ function CatteryPage() {
           <p className="mt-2 text-center font-display italic">{dam?.name ?? "—"}</p>
         </div>
         <div className="flex flex-col items-center justify-center rounded-xl border border-accent/40 bg-elevated/70 p-4">
-          <Button variant="accent" size="lg" disabled={!ready || mixing} onClick={onMix}>
+          <Button variant="accent" size="lg" disabled={!readyMix || mixing} onClick={onMix}>
             {mixing ? "Mixing…" : "Mix gene"}
           </Button>
-          {note && <p className="mt-4 text-center text-sm text-fg">{note}</p>}
-          {born && !mixing && (
-            <div className="mt-3 flex w-full max-w-40 flex-col items-center gap-2">
-              <CatPortrait cat={born} seal />
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => navigate({ to: "/alley", search: { cat: born.id } })}
-              >
-                Send to alley
-              </Button>
-            </div>
+          {mixing && (
+            <p className="mt-4 text-center text-sm text-muted">Organs choosing a parent.</p>
           )}
         </div>
         <div className="rounded-xl border border-border bg-surface/80 p-4">
@@ -93,7 +78,7 @@ function CatteryPage() {
       <div className="mt-10 flex items-end justify-between gap-4">
         <div>
           <p className="seal text-muted">Clowder</p>
-          <h2 className="mt-1 font-display text-2xl italic">{cats.length} cats</h2>
+          <h2 className="mt-1 font-display text-2xl italic">{ready ? cats.length : "—"} cats</h2>
         </div>
         <Button variant="ghost" size="sm" onClick={() => reset()}>
           Reset founders
@@ -106,10 +91,20 @@ function CatteryPage() {
             cat={cat}
             selected={cat.id === bench.damId || cat.id === bench.sireId}
             role={cat.id === bench.damId ? "dam" : cat.id === bench.sireId ? "sire" : null}
+            line={catLine(cat, cats)}
             onPick={() => pick(cat.id)}
           />
         ))}
       </div>
+
+      {showReveal && born && !mixing && (
+        <MixReveal
+          cat={born}
+          dam={cats.find((c) => c.id === born.damId)}
+          sire={cats.find((c) => c.id === born.sireId)}
+          onClose={() => setShowReveal(false)}
+        />
+      )}
     </div>
   );
 }

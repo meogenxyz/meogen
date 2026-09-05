@@ -7,18 +7,18 @@ Not Mewgenics. Not Tetris.
 - Web: [meogen.xyz](https://meogen.xyz)
 - X: [@meogenXYZ](https://x.com/meogenXYZ)
 - Telegram: [@meogenXYZ](https://t.me/meogenXYZ)
-- GitHub: [meogenxyz](https://github.com/meogenxyz)
+- GitHub: [meogenxyz/meogen](https://github.com/meogenxyz/meogen)
 
 ## Play
 
 | Page | What |
 |---|---|
-| Nest | Founders |
+| Nest | Six founders |
 | Cattery | Dam + sire. 50/50 organs. 6% mutant |
 | Alley | 45s pounce. Nerve / mass / luck |
-| Manual | The mix |
+| Manual | The mix + Nursery notes |
 
-Cats live on the page for now. Nursery on Robinhood Chain comes later.
+Cats live on the device for now. `MeogenNursery.sol` is ready for Remix when a Bowl exists.
 
 ## Stack
 

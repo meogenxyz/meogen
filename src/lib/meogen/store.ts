@@ -1,6 +1,7 @@
+import { useEffect, useState } from "react";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { FOUNDERS, mix, type Cat } from "@/lib/meogen/genes";
+import { FOUNDERS, mix, normalizeCat, type Cat } from "@/lib/meogen/genes";
 
 type Bench = { damId: string | null; sireId: string | null };
 
@@ -67,6 +68,34 @@ export const useCattery = create<State>()(
           mixing: false,
         }),
     }),
-    { name: "meogen-cattery-v1" },
+    {
+      name: "meogen-cattery-v2",
+      skipHydration: true,
+      version: 2,
+      merge: (persisted, current) => {
+        const p = persisted as Partial<State> | undefined;
+        const cats = (p?.cats ?? FOUNDERS).map(normalizeCat);
+        return {
+          ...current,
+          ...p,
+          cats,
+          mixing: false,
+        };
+      },
+    },
   ),
 );
+
+export function useCatteryReady() {
+  const [ready, setReady] = useState(false);
+  useEffect(() => {
+    let alive = true;
+    void Promise.resolve(useCattery.persist.rehydrate()).then(() => {
+      if (alive) setReady(true);
+    });
+    return () => {
+      alive = false;
+    };
+  }, []);
+  return ready;
+}
