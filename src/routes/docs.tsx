@@ -8,14 +8,14 @@ export const Route = createFileRoute("/docs")({
 function Codex() {
   return (
     <div className="mx-auto max-w-2xl px-4 py-12 sm:px-6">
-      <p className="seal">Codex</p>
-      <p className="banner mt-3 font-display text-4xl tracking-wide">How the mix works</p>
+      <p className="banner font-display text-3xl tracking-wide sm:text-4xl">The Codex</p>
+      <p className="mt-4 font-display text-4xl tracking-wide">How the mix works</p>
       <div className="scrap mt-8 space-y-8 bg-surface p-5 text-pretty text-muted sm:p-8">
         <section>
           <h2 className="font-display text-2xl tracking-wide text-fg">Four organs</h2>
           <p className="mt-2">
-            Head, body, tail, legs. Original cat parts that spill their frame. Each organ carries
-            its own coat.
+            Head, body, tail, legs. Each organ carries its own coat. Mix two cats; a mutant
+            may wear a card of its own.
           </p>
         </section>
         <section>
@@ -50,8 +50,8 @@ function Codex() {
         <section>
           <h2 className="font-display text-2xl tracking-wide text-fg">Genome</h2>
           <p className="mt-2">
-            Packed into a uint256. The site draws the original parts. The contract later mints a
-            seal of the same genome.
+            Packed into a uint256. Named mutants keep their illustrated card. Mixed kits draw a
+            sitting cat from the genome. The contract later mints a seal of the same genome.
           </p>
           <pre className="mt-3 overflow-x-auto border-[3px] border-ink bg-ink p-3 font-mono text-xs text-accent-fg">
             {`byte  0     1     2     3     4      5       6–13

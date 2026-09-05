@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { drawStandingCat, preloadCats } from "@/lib/game/cats";
+import { drawSittingCat, preloadCats } from "@/lib/game/cats";
 import { catColors, coatById, traits, type Cat } from "@/lib/meogen/genes";
 import { tapSfx } from "@/lib/meogen/sfx";
 import { Button } from "@/components/ui/button";
@@ -264,7 +264,7 @@ export function AlleyRun({
           ctx.clearRect(0, 0, w, h);
           drawWorld(gy, idleT * 40);
           const bob = Math.sin(idleT * 6) * 2;
-          drawStandingCat(ctx, coats, pX + pW * 0.45, gy + bob, 78, 1);
+          drawSittingCat(ctx, coats, pX + pW * 0.45, gy + bob, 78, 1);
           writeHud(0, 45);
           return;
         }
@@ -386,7 +386,7 @@ export function AlleyRun({
       ctx.save();
       ctx.translate(cx, gy + bob);
       ctx.scale(1 / stretch, stretch);
-      drawStandingCat(ctx, coats, 0, 0, size, flash ? 0.45 : 1);
+      drawSittingCat(ctx, coats, 0, 0, size, flash ? 0.45 : 1);
       ctx.restore();
       ctx.restore();
 

@@ -45,6 +45,7 @@ export type Cat = {
   bornAt: number;
   alleyBest: number;
   trace: MixTrace[];
+  art?: string;
 };
 
 export type Traits = {
@@ -159,7 +160,12 @@ export const FOUNDER_NOTE: Record<string, string> = {
   f_6: "Calico face, coal body.",
 };
 
-export function labMutant(name: string, coat: Record<Organ, number>, seed: number): Cat {
+export function labMutant(
+  name: string,
+  coat: Record<Organ, number>,
+  seed: number,
+  art: string,
+): Cat {
   return {
     id: `lab_${seed}`,
     name,
@@ -170,24 +176,65 @@ export function labMutant(name: string, coat: Record<Organ, number>, seed: numbe
     mutant: true,
     bornAt: 0,
     alleyBest: 0,
+    art,
     trace: ORGANS.map((organ) => ({ organ, from: "mutant" as const, coatId: coat[organ] })),
   };
 }
 
-/** Display-only kits for the Lab wall. Not in the cattery persist. */
+export const EPITHET: Record<string, string> = {
+  f_1: "Clay Queen",
+  f_2: "Ink Tom",
+  f_3: "Paper Fawn",
+  f_4: "Moss Legs",
+  f_5: "Sky Dusk",
+  f_6: "Calico Coal",
+  lab_201: "The Alchemist Calico",
+  lab_202: "The Two-Headed Siamese",
+  lab_203: "The Cyber-Cat",
+  lab_204: "The Winged Cat",
+  lab_205: "The Rune-Cat",
+  lab_206: "The Patchwork Scavenger",
+};
+
+export const PARTY_LINE: Record<string, string> = {
+  f_1: "Even clay. Mix me.",
+  f_2: "Let’s mix!!!",
+  f_6: "Send me to the alley.",
+  lab_201: "I mixed the vial. Keep it.",
+  lab_202: "Two heads. One kit.",
+  lab_203: "Circuit in the pelt.",
+  lab_204: "Wings. Not a collar.",
+  lab_205: "The runes came out.",
+  lab_206: "Stitched. Still a cat.",
+};
+
+export function epithet(cat: Cat): string {
+  if (EPITHET[cat.id]) return EPITHET[cat.id]!;
+  if (cat.mutant && isChimera(cat)) return "Split Mutant";
+  if (cat.mutant) return "Mutant Kit";
+  if (isChimera(cat)) return "Chimera Kit";
+  return `${coatById(cat.coat.head).name} Kit`;
+}
+
+export function partyLine(cat: Cat): string {
+  return PARTY_LINE[cat.id] ?? (cat.mutant ? "It came out wrong. Keep it." : "Let’s mix!!!");
+}
+
+/** Named mutants. Illustrated cards — not the old organ sprites. Mixable. */
 export const LAB_MUTANTS: Cat[] = [
-  labMutant("Gilt*", { head: 11, body: 11, tail: 11, legs: 11 }, 101),
-  labMutant("Split*", { head: 10, body: 9, tail: 1, legs: 8 }, 102),
-  labMutant("Rowmeo*", { head: 5, body: 11, tail: 3, legs: 1 }, 103),
-  labMutant("Kinpel*", { head: 2, body: 0, tail: 7, legs: 6 }, 104),
+  labMutant("Calix*", { head: 7, body: 1, tail: 6, legs: 7 }, 201, "/mutants/calix.jpg"),
+  labMutant("Duet*", { head: 2, body: 9, tail: 2, legs: 9 }, 202, "/mutants/duet.jpg"),
+  labMutant("Volt*", { head: 5, body: 9, tail: 5, legs: 9 }, 203, "/mutants/volt.jpg"),
+  labMutant("Gale*", { head: 7, body: 0, tail: 7, legs: 0 }, 204, "/mutants/gale.jpg"),
+  labMutant("Sigil*", { head: 1, body: 1, tail: 4, legs: 1 }, 205, "/mutants/sigil.jpg"),
+  labMutant("Patch*", { head: 7, body: 9, tail: 11, legs: 2 }, 206, "/mutants/patch.jpg"),
 ];
 
 export function isLabNote(cat: Cat) {
   return cat.id.startsWith("lab_");
 }
 
-export const PARTY: Cat[] = [FOUNDERS[1]!, FOUNDERS[0]!, LAB_MUTANTS[0]!, FOUNDERS[5]!, LAB_MUTANTS[1]!];
-
+export const PARTY: Cat[] = LAB_MUTANTS;
 export function byId(cats: Cat[], id: string | null | undefined): Cat | undefined {
   if (!id) return undefined;
   return cats.find((c) => c.id === id);

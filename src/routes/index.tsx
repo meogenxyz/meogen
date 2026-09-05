@@ -1,12 +1,11 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useState } from "react";
 import { CatParty } from "@/components/meogen/CatParty";
 import { CatPortrait } from "@/components/meogen/CatPortrait";
 import { Button } from "@/components/ui/button";
 import {
-  FOUNDER_NOTE,
+  epithet,
   FOUNDERS,
-  isLabNote,
-  LAB_MUTANTS,
   PARTY,
   traits,
   type Cat,
@@ -17,78 +16,82 @@ export const Route = createFileRoute("/")({
   component: Home,
 });
 
-function mutantWall(born: Cat[]): Cat[] {
-  const wall = [...born.slice(0, 6)];
-  for (const extra of LAB_MUTANTS) {
-    if (wall.length >= 6) break;
-    wall.push(extra);
-  }
-  return wall;
-}
-
 function Home() {
   const ready = useCatteryReady();
   const cats = useCattery((s) => s.cats);
-  const born = ready ? Math.max(0, cats.length - FOUNDERS.length) : 0;
+  const [pickedId, setPickedId] = useState(PARTY[0]!.id);
+  const picked = PARTY.find((c) => c.id === pickedId) ?? PARTY[0]!;
+  const born = ready ? cats.filter((c) => c.gen > 0 && !c.art) : [];
   const ranked = ready
     ? [...cats].filter((c) => (c.alleyBest ?? 0) > 0).sort((a, b) => b.alleyBest - a.alleyBest)
     : [];
   const mutants = ready ? cats.filter((c) => c.mutant) : [];
-  const wall = mutantWall(mutants);
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-14">
-      <p className="seal">Lab</p>
-      <p className="banner mt-4 font-display text-5xl tracking-wide sm:text-6xl">Meogen</p>
-      <p className="mt-3 max-w-lg text-pretty text-muted">
-        Not Mewgenics. Original organs. Head, body, tail, legs. Mix until one comes out wrong.
+    <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-12">
+      <p className="banner font-display text-3xl tracking-wide sm:text-5xl">The Lab — New Mutants</p>
+      <p className="mt-4 font-display text-xl tracking-wide text-muted">Click to pick a cat</p>
+      <p className="mt-1 max-w-lg text-pretty text-sm text-subtle">
+        Not Mewgenics. Original mutants. Mix until one comes out wrong.
       </p>
-      <div className="mt-8">
-        <CatParty cats={PARTY} line="Let’s mix!!!" />
+      <div className="mt-6">
+        <CatParty cats={PARTY} pickedId={pickedId} onPick={setPickedId} />
       </div>
-      <div className="mt-6 flex flex-wrap gap-3">
-        <Button variant="accent" size="lg" asChild>
-          <Link to="/cattery">Mix a kit</Link>
-        </Button>
-        <Button variant="outline" size="lg" asChild>
-          <Link to="/alley">Send one out</Link>
-        </Button>
+      <div className="mt-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <p className="plate">{picked.name}</p>
+          <p className="mt-2 text-sm text-muted">{epithet(picked)}</p>
+        </div>
+        <div className="flex flex-wrap gap-3">
+          <Button variant="accent" size="lg" asChild>
+            <Link to="/cattery" search={{ dam: picked.id }}>
+              Mix a kit
+            </Link>
+          </Button>
+          <Button variant="outline" size="lg" asChild>
+            <Link to="/alley" search={{ cat: picked.id }}>
+              Send one out
+            </Link>
+          </Button>
+        </div>
       </div>
       {ready && (
         <p className="mt-5 text-sm tabular text-muted">
           {cats.length} in the clowder
-          {born > 0 ? ` · ${born} born here` : ""}
+          {born.length > 0 ? ` · ${born.length} born here` : ""}
           {mutants.length ? ` · ${mutants.length} mutant` : ""}
           {ranked[0] ? ` · alley ${ranked[0].name} ${ranked[0].alleyBest}` : ""}
         </p>
       )}
 
-      <section className="mt-14">
-        <p className="banner font-display text-2xl tracking-wide">Mutants</p>
-        <p className="mt-3 max-w-lg text-sm text-pretty text-muted">
-          Six percent per organ. A gilt, or a coat the parents never wore. Keep it.
-        </p>
-        <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
-          {wall.map((cat) => (
-            <Link
-              key={cat.id}
-              to="/cattery"
-              search={isLabNote(cat) ? {} : { dam: cat.id }}
-              className="tape scrap p-2 hover:-rotate-1"
-            >
-              <CatPortrait cat={cat} seal />
-              <p className="mt-1 text-center font-display text-xl tracking-wide">{cat.name}</p>
-              <p className="mt-0.5 text-center text-xs text-subtle">
-                {isLabNote(cat) ? "lab note" : `gen ${cat.gen}`}
-              </p>
-            </Link>
-          ))}
-        </div>
-      </section>
+      {born.length > 0 && (
+        <section className="mt-14">
+          <p className="banner font-display text-2xl tracking-wide">Born here</p>
+          <div className="mt-5 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
+            {born.slice(0, 6).map((cat: Cat) => (
+              <Link
+                key={cat.id}
+                to="/cattery"
+                search={{ dam: cat.id }}
+                className="polaroid tape"
+              >
+                <div className="polaroid__shot">
+                  <CatPortrait cat={cat} seal />
+                </div>
+                <p className="plate mx-auto mt-2">{cat.name}</p>
+                <p className="mt-1 text-center text-xs text-subtle">{epithet(cat)}</p>
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
 
       <section className="mt-14">
         <p className="banner font-display text-2xl tracking-wide">Founders</p>
-        <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+        <p className="mt-3 max-w-lg text-sm text-pretty text-muted">
+          Six wild coats. Mix them with a mutant. Organs still roll fifty-fifty.
+        </p>
+        <div className="mt-5 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
           {FOUNDERS.map((cat) => {
             const t = traits(cat);
             return (
@@ -96,13 +99,13 @@ function Home() {
                 key={cat.id}
                 to="/cattery"
                 search={{ dam: cat.id }}
-                className="tape scrap p-2 hover:-rotate-1"
+                className="polaroid tape"
               >
-                <CatPortrait cat={cat} />
-                <p className="mt-1 text-center font-display text-xl tracking-wide">{cat.name}</p>
-                <p className="mt-0.5 text-center text-xs text-pretty text-subtle">
-                  {FOUNDER_NOTE[cat.id]}
-                </p>
+                <div className="polaroid__shot">
+                  <CatPortrait cat={cat} />
+                </div>
+                <p className="plate mx-auto mt-2">{cat.name}</p>
+                <p className="mt-1 text-center text-xs text-pretty text-subtle">{epithet(cat)}</p>
                 <p className="mt-1 text-center text-xs tabular text-subtle">
                   n{t.nerve} m{t.mass} l{t.luck}
                 </p>

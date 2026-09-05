@@ -31,12 +31,15 @@ function AlleyPage() {
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
-      <p className="seal">Alley</p>
-      <h1 className="mt-2 font-display text-5xl tracking-wide text-balance">Send a cat out</h1>
+      <p className="banner font-display text-3xl tracking-wide sm:text-4xl">The Alley</p>
+      <h1 className="mt-4 font-display text-5xl tracking-wide text-balance">Send a cat out</h1>
       <p className="mt-3 max-w-xl text-pretty text-muted">
         Nerve lifts the leap. Mass buys a second life. Luck sometimes slips a crate. Leap to go —
         the clock waits.
       </p>
+      {!cat && (
+        <p className="mt-4 font-display text-xl tracking-wide text-muted">Click to pick a cat</p>
+      )}
 
       {!cat && marks.length > 0 && (
         <section className="mt-8">

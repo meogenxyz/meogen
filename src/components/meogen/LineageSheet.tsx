@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { CatPortrait } from "@/components/meogen/CatPortrait";
 import { GeneStrip } from "@/components/meogen/GeneStrip";
 import { Button } from "@/components/ui/button";
-import { byId, FOUNDER_NOTE, genomeHex, isChimera, traits, type Cat } from "@/lib/meogen/genes";
+import { byId, epithet, FOUNDER_NOTE, genomeHex, isChimera, traits, type Cat } from "@/lib/meogen/genes";
 import { downloadCatSvg } from "@/lib/meogen/svg";
 
 function Kin({ cat, label }: { cat?: Cat; label: string }) {
@@ -70,6 +70,7 @@ export function LineageSheet({
         <h2 id="line-title" className="mt-3 font-display text-4xl tracking-wide text-balance">
           {cat.name}
         </h2>
+        <p className="plate mt-2">{epithet(cat)}</p>
         <p className="mt-1 text-sm text-muted">
           Gen {cat.gen}
           {chimera ? " · chimera" : ""}

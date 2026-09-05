@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { FOUNDERS, mix, normalizeCat, type Cat } from "@/lib/meogen/genes";
+import { FOUNDERS, LAB_MUTANTS, mix, normalizeCat, type Cat } from "@/lib/meogen/genes";
 
 type Bench = { damId: string | null; sireId: string | null };
 
@@ -22,7 +22,7 @@ type State = {
 export const useCattery = create<State>()(
   persist(
     (set, get) => ({
-      cats: FOUNDERS,
+      cats: [...FOUNDERS, ...LAB_MUTANTS],
       bench: { damId: null, sireId: null },
       lastBorn: null,
       mixing: false,
@@ -68,7 +68,7 @@ export const useCattery = create<State>()(
         }),
       reset: () =>
         set({
-          cats: FOUNDERS,
+          cats: [...FOUNDERS, ...LAB_MUTANTS],
           bench: { damId: null, sireId: null },
           lastBorn: null,
           mixing: false,
@@ -77,10 +77,18 @@ export const useCattery = create<State>()(
     {
       name: "meogen-cattery-v2",
       skipHydration: true,
-      version: 2,
+      version: 3,
       merge: (persisted, current) => {
         const p = persisted as Partial<State> | undefined;
-        const cats = (p?.cats ?? FOUNDERS).map(normalizeCat);
+        const raw = (p?.cats ?? [...FOUNDERS, ...LAB_MUTANTS]).map(normalizeCat);
+        const have = new Set(raw.map((c) => c.id));
+        const cats = [
+          ...raw.map((c) => {
+            const lab = LAB_MUTANTS.find((m) => m.id === c.id);
+            return lab ? { ...c, art: lab.art, name: lab.name, mutant: true } : c;
+          }),
+          ...LAB_MUTANTS.filter((m) => !have.has(m.id)),
+        ];
         return {
           ...current,
           ...p,

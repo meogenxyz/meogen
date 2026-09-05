@@ -1,4 +1,4 @@
-import { isChimera, parentNames, traits, type Cat } from "@/lib/meogen/genes";
+import { epithet, isChimera, parentNames, traits, type Cat } from "@/lib/meogen/genes";
 import { CatPortrait } from "@/components/meogen/CatPortrait";
 import { GeneStrip } from "@/components/meogen/GeneStrip";
 import { cn } from "@/lib/utils";
@@ -23,22 +23,26 @@ export function CatCard({
   return (
     <article
       className={cn(
-        "tape scrap text-left transition-transform duration-150",
-        selected ? "rotate-0 bg-elevated" : "hover:-rotate-1",
-        cat.mutant ? "outline outline-4 outline-offset-2 outline-accent" : "",
+        "polaroid tape text-left transition-transform duration-150",
+        selected ? "polaroid--picked" : "",
       )}
     >
-      <button type="button" onClick={onPick} className="w-full p-3 text-left">
-        <CatPortrait cat={cat} className="mx-auto w-full max-w-40" seal />
-        <p className="mt-2 font-display text-2xl leading-tight tracking-wide text-balance">{cat.name}</p>
-        <p className="mt-0.5 text-xs uppercase tracking-[0.14em] text-muted">
+      <button type="button" onClick={onPick} className="w-full text-left">
+        <div className="polaroid__shot">
+          <CatPortrait cat={cat} className="mx-auto w-full max-w-40" seal />
+        </div>
+        <p className="plate mx-auto mt-2">{cat.name}</p>
+        <p className="mt-1 text-center text-xs uppercase tracking-[0.14em] text-muted">
+          {epithet(cat)}
+          {role ? ` · ${role}` : ""}
+        </p>
+        <p className="mt-0.5 text-center text-xs text-subtle">
           gen {cat.gen}
           {chimera ? " · chimera" : ""}
           {cat.mutant ? " · mutant" : ""}
-          {role ? ` · ${role}` : ""}
         </p>
-        {line ? <p className="mt-0.5 text-xs text-subtle">{line}</p> : null}
-        <p className="mt-1 text-xs tabular text-subtle">
+        {line ? <p className="mt-0.5 text-center text-xs text-subtle">{line}</p> : null}
+        <p className="mt-1 text-center text-xs tabular text-subtle">
           n{t.nerve} m{t.mass} l{t.luck}
           {(cat.alleyBest ?? 0) > 0 ? ` · alley ${cat.alleyBest}` : ""}
         </p>
@@ -47,7 +51,7 @@ export function CatCard({
         </div>
       </button>
       {onLine && (
-        <div className="border-t-[3px] border-ink px-3 py-2">
+        <div className="mt-2 border-t-[3px] border-ink px-1 pt-2">
           <button
             type="button"
             onClick={onLine}

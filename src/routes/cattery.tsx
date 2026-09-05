@@ -92,8 +92,8 @@ function CatteryPage() {
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
-      <p className="seal">Cattery</p>
-      <h1 className="mt-2 font-display text-5xl tracking-wide text-balance">Mix a kit</h1>
+      <p className="banner font-display text-3xl tracking-wide sm:text-4xl">The Cattery</p>
+      <h1 className="mt-4 font-display text-5xl tracking-wide text-balance">Mix a kit</h1>
       <p className="mt-3 max-w-xl text-pretty text-muted">
         Tap dam, tap sire, mix. Each organ rolls 50/50. Six percent gilt or wild coat.
       </p>
@@ -102,11 +102,13 @@ function CatteryPage() {
         <div className="scrap p-4">
           <p className="font-display tracking-wide text-muted">Dam</p>
           {dam ? (
-            <CatPortrait cat={dam} className="mx-auto mt-2 max-w-44" />
+            <>
+              <CatPortrait cat={dam} className="mx-auto mt-2 max-w-44" />
+              <p className="plate mx-auto mt-2">{dam.name}</p>
+            </>
           ) : (
             <p className="mt-8 text-center text-sm text-subtle">Pick a queen</p>
           )}
-          <p className="mt-2 text-center font-display text-2xl tracking-wide">{dam?.name ?? "—"}</p>
         </div>
         <div className="flex flex-col items-center justify-center scrap bg-elevated p-4">
           <Button variant="accent" size="lg" disabled={!readyMix || mixing} onClick={onMix}>
@@ -121,11 +123,13 @@ function CatteryPage() {
         <div className="scrap p-4">
           <p className="font-display tracking-wide text-muted">Sire</p>
           {sire ? (
-            <CatPortrait cat={sire} className="mx-auto mt-2 max-w-44" />
+            <>
+              <CatPortrait cat={sire} className="mx-auto mt-2 max-w-44" />
+              <p className="plate mx-auto mt-2">{sire.name}</p>
+            </>
           ) : (
             <p className="mt-8 text-center text-sm text-subtle">Pick a tom</p>
           )}
-          <p className="mt-2 text-center font-display text-2xl tracking-wide">{sire?.name ?? "—"}</p>
         </div>
       </div>
 
