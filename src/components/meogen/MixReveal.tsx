@@ -67,16 +67,15 @@ export function MixReveal({
         onClick={(e) => e.stopPropagation()}
       >
         <p className="banner font-display text-xl tracking-wide">
-          {cat.mutant ? "Mutant kit" : "Kitten"}
+          {cat.mutant ? "Kit came out wrong!" : "Kit came out!"}
         </p>
         <h2 id="mix-title" className="mt-3 font-display text-4xl tracking-wide text-balance">
           {landed ? cat.name : "Organs choosing…"}
         </h2>
         <p className="mt-1 text-sm text-muted">
-          Gen {cat.gen}
-          {landed && chimera ? " · chimera" : ""}
-          {landed && cat.mutant ? " · mutant" : ""}
-          {dam && sire ? ` · ${dam.name} × ${sire.name}` : ""}
+          {landed ? `${cat.name} is gen ${cat.gen}.` : "Wait for the pelt."}
+          {landed && chimera ? " Chimera." : ""}
+          {dam && sire ? ` ${dam.name} × ${sire.name}.` : ""}
         </p>
         {landed && cat.mutant && (
           <p className="bubble mt-4 text-base">It came out wrong. Keep it.</p>

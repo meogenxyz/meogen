@@ -3,6 +3,7 @@ import { drawSittingCat, preloadCats } from "@/lib/game/cats";
 import { catColors, coatById, traits, type Cat } from "@/lib/meogen/genes";
 import { tapSfx } from "@/lib/meogen/sfx";
 import { Button } from "@/components/ui/button";
+import { CatPortrait } from "@/components/meogen/CatPortrait";
 
 type Obstacle = { x: number; w: number; h: number; live: boolean; kind: 0 | 1 };
 type Speck = { x: number; y: number; vx: number; vy: number; life: number; max: number; live: boolean };
@@ -430,11 +431,18 @@ export function AlleyRun({
         ref={canvasRef}
         className="h-[52vh] min-h-56 w-full touch-none border-[3px] border-ink bg-bg"
       />
-      <div className="pointer-events-none absolute inset-x-3 top-3 flex items-start justify-between text-sm">
-        <p className="banner px-3 py-1 font-display tracking-wide text-fg">{cat.name}</p>
-        <p ref={hudRef} className="banner px-3 py-1 tabular text-fg">
-          Leap to go
-        </p>
+      <div className="pointer-events-none absolute inset-x-3 top-3 flex items-start justify-between gap-3 text-sm">
+        <div className="nametag">
+          <div className="nametag__face">
+            <CatPortrait cat={cat} />
+          </div>
+          <div>
+            <p className="font-display text-xl tracking-wide text-fg">{cat.name}</p>
+            <p ref={hudRef} className="tabular text-muted">
+              Leap to go
+            </p>
+          </div>
+        </div>
       </div>
       {waiting && !over && (
         <div className="pointer-events-none absolute inset-0 flex items-center justify-center">

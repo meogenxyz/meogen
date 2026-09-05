@@ -14,7 +14,7 @@ Not Mewgenics.
 | Page | What |
 |---|---|
 | Lab | Six mutant cards. Pick one. Mix with a founder |
-| Cattery | Dam + sire. 50/50 organs. 6% mutant |
+| Cattery | Room of cats. Paper sheet. Mix gene |
 | Alley | 45s leap. Nerve / mass / luck |
 | Codex | The mix + Nursery notes |
 

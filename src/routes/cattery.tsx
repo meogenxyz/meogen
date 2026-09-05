@@ -1,7 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
-import { CatCard, catLine } from "@/components/meogen/CatCard";
 import { CatPortrait } from "@/components/meogen/CatPortrait";
+import { CatRoom } from "@/components/meogen/CatRoom";
+import { CatSheet } from "@/components/meogen/CatSheet";
 import { LineageSheet } from "@/components/meogen/LineageSheet";
 import { MixForecast } from "@/components/meogen/MixForecast";
 import { MixReveal } from "@/components/meogen/MixReveal";
@@ -46,11 +47,15 @@ function CatteryPage() {
   const reset = useCattery((s) => s.reset);
   const [showReveal, setShowReveal] = useState(false);
   const [inspectId, setInspectId] = useState<string | null>(null);
+  const [focusId, setFocusId] = useState<string | null>(null);
   const [drawer, setDrawer] = useState<Drawer>("all");
 
   useEffect(() => {
     if (!ready) return;
-    if (damQ) assign("dam", damQ);
+    if (damQ) {
+      assign("dam", damQ);
+      setFocusId(damQ);
+    }
     if (sireQ) assign("sire", sireQ);
   }, [ready, damQ, sireQ, assign]);
 
@@ -77,6 +82,12 @@ function CatteryPage() {
     }
   }, [cats, drawer]);
 
+  const focused =
+    shown.find((c) => c.id === focusId) ??
+    shown.find((c) => c.id === bench.damId) ??
+    shown[0] ??
+    null;
+
   const onMix = () => {
     if (!readyMix || mixing) return;
     setShowReveal(false);
@@ -90,20 +101,52 @@ function CatteryPage() {
     }, 420);
   };
 
+  const onRoomPick = (id: string) => {
+    pick(id);
+    setFocusId(id);
+  };
+
   return (
     <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
       <p className="banner font-display text-3xl tracking-wide sm:text-4xl">The Cattery</p>
       <h1 className="mt-4 font-display text-5xl tracking-wide text-balance">Mix a kit</h1>
-      <p className="mt-3 max-w-xl text-pretty text-muted">
-        Tap dam, tap sire, mix. Each organ rolls 50/50. Six percent gilt or wild coat.
+      <p className="bubble mt-4 max-w-xl text-base">
+        Six came out of the vat. Keep the wrong ones.
       </p>
 
-      <div className="mt-8 grid gap-4 md:grid-cols-3">
+      <div className="mt-8 grid gap-4 lg:grid-cols-[minmax(0,16rem)_minmax(0,1fr)]">
+        {focused ? (
+          <CatSheet
+            cat={focused}
+            role={
+              focused.id === bench.damId ? "dam" : focused.id === bench.sireId ? "sire" : null
+            }
+            onDam={() => assign("dam", focused.id)}
+            onSire={() => assign("sire", focused.id)}
+            onLine={() => setInspectId(focused.id)}
+          />
+        ) : (
+          <aside className="scrap p-6 text-sm text-muted">No cat in this drawer.</aside>
+        )}
+        {shown.length === 0 ? (
+          <p className="flex items-center text-sm text-muted">None in this drawer.</p>
+        ) : (
+          <CatRoom
+            cats={shown}
+            damId={bench.damId}
+            sireId={bench.sireId}
+            focusId={focused?.id}
+            onPick={onRoomPick}
+          />
+        )}
+      </div>
+
+      <div className="mt-4 grid gap-4 md:grid-cols-3">
         <div className="scrap p-4">
           <p className="font-display tracking-wide text-muted">Dam</p>
           {dam ? (
             <>
-              <CatPortrait cat={dam} className="mx-auto mt-2 max-w-44" />
+              <CatPortrait cat={dam} className="mx-auto mt-2 max-w-36" />
               <p className="plate mx-auto mt-2">{dam.name}</p>
             </>
           ) : (
@@ -124,7 +167,7 @@ function CatteryPage() {
           <p className="font-display tracking-wide text-muted">Sire</p>
           {sire ? (
             <>
-              <CatPortrait cat={sire} className="mx-auto mt-2 max-w-44" />
+              <CatPortrait cat={sire} className="mx-auto mt-2 max-w-36" />
               <p className="plate mx-auto mt-2">{sire.name}</p>
             </>
           ) : (
@@ -133,7 +176,7 @@ function CatteryPage() {
         </div>
       </div>
 
-      <div className="mt-10 flex flex-wrap items-end justify-between gap-4">
+      <div className="mt-8 flex flex-wrap items-end justify-between gap-4">
         <div>
           <p className="seal">Clowder</p>
           <h2 className="mt-1 font-display text-3xl tracking-wide">{ready ? cats.length : "—"} cats</h2>
@@ -159,23 +202,6 @@ function CatteryPage() {
           </button>
         ))}
       </div>
-      {shown.length === 0 ? (
-        <p className="mt-8 text-sm text-muted">None in this drawer.</p>
-      ) : (
-        <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-          {shown.map((cat) => (
-            <CatCard
-              key={cat.id}
-              cat={cat}
-              selected={cat.id === bench.damId || cat.id === bench.sireId}
-              role={cat.id === bench.damId ? "dam" : cat.id === bench.sireId ? "sire" : null}
-              line={catLine(cat, cats)}
-              onPick={() => pick(cat.id)}
-              onLine={() => setInspectId(cat.id)}
-            />
-          ))}
-        </div>
-      )}
 
       {showReveal && born && !mixing && (
         <MixReveal

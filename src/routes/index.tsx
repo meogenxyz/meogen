@@ -34,6 +34,9 @@ function Home() {
       <p className="mt-1 max-w-lg text-pretty text-sm text-subtle">
         Not Mewgenics. Original mutants. Mix until one comes out wrong.
       </p>
+      <p className="bubble mt-4 max-w-lg text-base">
+        Six came out of the vat. Keep the wrong ones.
+      </p>
       <div className="mt-6">
         <CatParty cats={PARTY} pickedId={pickedId} onPick={setPickedId} />
       </div>
