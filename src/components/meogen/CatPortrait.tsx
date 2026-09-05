@@ -14,11 +14,14 @@ export function CatPortrait({
   cat,
   className,
   seal,
+  showOrgans,
 }: {
   cat: Cat;
   className?: string;
   seal?: boolean;
+  showOrgans?: Organ[];
 }) {
+  const visible = showOrgans ?? ORGANS;
   const parts = useMemo(
     () =>
       ORGANS.map((organ) => ({
@@ -30,15 +33,17 @@ export function CatPortrait({
 
   return (
     <div className={cn("relative aspect-square overflow-visible", className)}>
-      {parts.map((p) => (
-        <img
-          key={p.organ}
-          alt=""
-          src={p.src}
-          className={cn("pointer-events-none absolute", SLOT[p.organ])}
-        />
-      ))}
-      {seal && cat.mutant && (
+      {parts
+        .filter((p) => visible.includes(p.organ))
+        .map((p) => (
+          <img
+            key={p.organ}
+            alt=""
+            src={p.src}
+            className={cn("pointer-events-none absolute organ-land", SLOT[p.organ])}
+          />
+        ))}
+      {seal && cat.mutant && visible.length >= ORGANS.length && (
         <span className="absolute right-1 top-1 rounded-sm bg-accent px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-accent-fg">
           mutant
         </span>

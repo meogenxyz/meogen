@@ -10,14 +10,14 @@ export type Coat = {
 
 export const COATS: Coat[] = [
   { id: 0, name: "Ink", hex: "#171210" },
-  { id: 1, name: "Vermilion", hex: "#d4563a" },
+  { id: 1, name: "Clay", hex: "#d4563a" },
   { id: 2, name: "Paper", hex: "#f6ecdc" },
   { id: 3, name: "Moss", hex: "#4d6a52" },
   { id: 4, name: "Dusk", hex: "#6a4a58" },
   { id: 5, name: "Sky", hex: "#3a4e68" },
-  { id: 6, name: "Cream", hex: "#e8c9a0" },
+  { id: 6, name: "Fawn", hex: "#e8c9a0" },
   { id: 7, name: "Calico", hex: "#c47a3a" },
-  { id: 8, name: "Jade", hex: "#6f8f74" },
+  { id: 8, name: "Sage", hex: "#6f8f74" },
   { id: 9, name: "Coal", hex: "#2a2320" },
   { id: 10, name: "Snow", hex: "#fff6ee" },
   { id: 11, name: "Gilt", hex: "#c9a06a" },
@@ -74,6 +74,10 @@ export function catColors(cat: Cat): string[] {
 export function isChimera(cat: Cat) {
   const ids = ORGANS.map((o) => cat.coat[o]);
   return new Set(ids).size > 1;
+}
+
+export function isFounder(cat: Cat) {
+  return cat.gen === 0;
 }
 
 function rng() {
@@ -146,9 +150,56 @@ export const FOUNDERS: Cat[] = [
   founder("Vic", { head: 7, body: 0, tail: 7, legs: 9 }, 6),
 ];
 
+export const FOUNDER_NOTE: Record<string, string> = {
+  f_1: "Even clay. First queen.",
+  f_2: "All ink. First tom.",
+  f_3: "Paper over fawn.",
+  f_4: "Moss with sage legs.",
+  f_5: "Sky head, dusk tail.",
+  f_6: "Calico face, coal body.",
+};
+
+export function byId(cats: Cat[], id: string | null | undefined): Cat | undefined {
+  if (!id) return undefined;
+  return cats.find((c) => c.id === id);
+}
+
+export type OrganForecast = {
+  organ: Organ;
+  dam: Coat;
+  sire: Coat;
+  split: boolean;
+};
+
+export type PairForecast = {
+  organs: OrganForecast[];
+  chimeraLikely: boolean;
+  nerve: [number, number];
+  mass: [number, number];
+};
+
+/** Pairing odds before the 6% mutant roll. */
+export function pairForecast(dam: Cat, sire: Cat): PairForecast {
+  const organs = ORGANS.map((organ) => {
+    const d = coatById(dam.coat[organ]);
+    const s = coatById(sire.coat[organ]);
+    return { organ, dam: d, sire: s, split: d.id !== s.id };
+  });
+  const nMin = 10 + Math.min(dam.coat.head, sire.coat.head) + Math.min(dam.coat.tail, sire.coat.tail);
+  const nMax = 10 + Math.max(dam.coat.head, sire.coat.head) + Math.max(dam.coat.tail, sire.coat.tail);
+  const mMin = 10 + Math.min(dam.coat.body, sire.coat.body) + Math.min(dam.coat.legs, sire.coat.legs);
+  const mMax = 10 + Math.max(dam.coat.body, sire.coat.body) + Math.max(dam.coat.legs, sire.coat.legs);
+  return {
+    organs,
+    chimeraLikely: organs.some((o) => o.split),
+    nerve: [nMin, nMax],
+    mass: [mMin, mMax],
+  };
+}
+
 /** Packed genome. Matches MeogenNursery.sol
  *  bits 0-7 head, 8-15 body, 16-23 tail, 24-31 legs,
- *  32-39 generation, 40 mutant, 48-111 entropy.
+ *  32-39 generation, 40 mutant, 41 chimera, 48-111 entropy.
  */
 export function packGenome(cat: Cat): bigint {
   let g = 0n;

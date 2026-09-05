@@ -3,12 +3,12 @@ pragma solidity 0.8.24;
 
 /// @title Meogen Nursery
 /// @notice Mix two cats. Each organ 50/50. 6% mutant per organ.
-/// Mix fee goes to Bowl — never an EOA. One-hour cooldown. Founder cap 500.
-/// Token SVG is a genome seal. Overflowing sprites live on meogen.xyz.
+/// Mix fee goes to Vat — never an EOA. One-hour cooldown. Founder cap 500.
+/// Token SVG is a genome seal. Original organ sprites live on meogen.xyz.
 /// Not Mewgenics. Compiler 0.8.24, optimizer 200, Robinhood 4663.
 contract MeogenNursery {
     address public owner;
-    address payable public bowl;
+    address payable public vat;
 
     uint256 public mixFee = 0.0003 ether;
     uint64 public constant COOLDOWN = 1 hours;
@@ -30,7 +30,7 @@ contract MeogenNursery {
 
     event Transfer(address indexed from, address indexed to, uint256 indexed id);
     event Mixed(uint256 indexed kitten, uint256 dam, uint256 sire, uint256 genome);
-    event BowlSet(address bowl);
+    event VatSet(address vat);
     event MixFeeSet(uint256 fee);
 
     modifier onlyOwner() {
@@ -38,16 +38,16 @@ contract MeogenNursery {
         _;
     }
 
-    constructor(address payable _bowl) {
-        require(_bowl != address(0), "bowl");
+    constructor(address payable _vat) {
+        require(_vat != address(0), "vat");
         owner = msg.sender;
-        bowl = _bowl;
+        vat = _vat;
     }
 
-    function setBowl(address payable _bowl) external onlyOwner {
-        require(_bowl != address(0), "bowl");
-        bowl = _bowl;
-        emit BowlSet(_bowl);
+    function setVat(address payable _vat) external onlyOwner {
+        require(_vat != address(0), "vat");
+        vat = _vat;
+        emit VatSet(_vat);
     }
 
     function setMixFee(uint256 fee) external onlyOwner {
@@ -71,7 +71,7 @@ contract MeogenNursery {
         emit Transfer(address(0), msg.sender, id);
     }
 
-    /// @notice Mix dam + sire. Fee to Bowl. Cooldown 1 hour per mixer.
+    /// @notice Mix dam + sire. Fee to Vat. Cooldown 1 hour per mixer.
     function mix(uint256 dam, uint256 sire) external payable returns (uint256 id) {
         require(ownerOf[dam] == msg.sender && ownerOf[sire] == msg.sender, "not yours");
         require(dam != sire, "same");
@@ -83,8 +83,8 @@ contract MeogenNursery {
         lastMixAt[sire] = uint64(block.timestamp);
 
         if (msg.value > 0) {
-            (bool ok, ) = bowl.call{value: msg.value}("");
-            require(ok, "bowl");
+            (bool ok, ) = vat.call{value: msg.value}("");
+            require(ok, "vat");
         }
 
         id = nextId++;

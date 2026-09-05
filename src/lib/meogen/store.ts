@@ -11,6 +11,7 @@ type State = {
   lastBorn: string | null;
   mixing: boolean;
   pick: (id: string) => void;
+  assign: (role: "dam" | "sire", id: string) => void;
   clearBench: () => void;
   breed: () => Cat | null;
   setMixing: (v: boolean) => void;
@@ -38,6 +39,11 @@ export const useCattery = create<State>()(
         if (!bench.damId) set({ bench: { ...bench, damId: id } });
         else if (!bench.sireId) set({ bench: { ...bench, sireId: id } });
         else set({ bench: { damId: bench.sireId, sireId: id } });
+      },
+      assign: (role, id) => {
+        const { bench } = get();
+        if (role === "dam") set({ bench: { ...bench, damId: id } });
+        else set({ bench: { ...bench, sireId: id } });
       },
       clearBench: () => set({ bench: { damId: null, sireId: null } }),
       breed: () => {

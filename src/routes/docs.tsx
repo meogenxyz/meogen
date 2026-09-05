@@ -1,21 +1,21 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { COATS, MUTANT_BPS } from "@/lib/meogen/genes";
+import { COATS, FOUNDER_NOTE, FOUNDERS, MUTANT_BPS, traits } from "@/lib/meogen/genes";
 
 export const Route = createFileRoute("/docs")({
-  component: Manual,
+  component: Codex,
 });
 
-function Manual() {
+function Codex() {
   return (
     <div className="mx-auto max-w-2xl px-4 py-12 sm:px-6">
-      <p className="seal text-muted">Manual</p>
+      <p className="seal text-muted">Codex</p>
       <h1 className="mt-2 font-display text-4xl italic text-balance">How the mix works</h1>
       <div className="mt-8 space-y-8 text-pretty text-muted">
         <section>
           <h2 className="font-display text-2xl italic text-fg">Four organs</h2>
           <p className="mt-2">
-            Head, body, tail, legs. The same original sprites that overflow a cell. Each organ
-            carries its own coat.
+            Head, body, tail, legs. Original cat parts that spill their frame. Each organ carries
+            its own coat.
           </p>
         </section>
         <section>
@@ -28,24 +28,55 @@ function Manual() {
         <section>
           <h2 className="font-display text-2xl italic text-fg">Mutant</h2>
           <p className="mt-2">
-            {MUTANT_BPS / 100}% per organ. Gilt gold, or a wild coat the parents never wore. Marked
-            with a vermilion seal.
+            {MUTANT_BPS / 100}% per organ. Gilt, or a wild coat the parents never wore. Marked with
+            a red seal.
+          </p>
+        </section>
+        <section>
+          <h2 className="font-display text-2xl italic text-fg">Traits</h2>
+          <p className="mt-2">
+            Nerve = 10 + head + tail. Lifts the leap. Mass = 10 + body + legs. Twenty-four or more
+            buys a second life. Luck = 2, plus 6 if chimera, plus 10 if mutant. Luck sometimes
+            slips a crate.
           </p>
         </section>
         <section>
           <h2 className="font-display text-2xl italic text-fg">Alley</h2>
           <p className="mt-2">
-            Forty-five seconds. Tap to pounce. Head and tail make nerve (jump). Body and legs make
-            mass (a second life if heavy). Mutants and chimeras slip crates. Best score writes onto
-            the cat.
+            Leap to go. Forty-five seconds. Tap or space. Best score writes onto the cat as a mark.
+            The clock does not start until the first leap.
           </p>
         </section>
         <section>
           <h2 className="font-display text-2xl italic text-fg">Genome</h2>
           <p className="mt-2">
-            Packed into a uint256. Bytes: head, body, tail, legs, generation, flags, entropy. The
-            site draws overflowing parts. The contract later mints a seal of the same genome.
+            Packed into a uint256. The site draws the original parts. The contract later mints a
+            seal of the same genome.
           </p>
+          <pre className="mt-3 overflow-x-auto rounded-lg border border-border bg-ink/50 p-3 font-mono text-xs text-fg">
+            {`byte  0     1     2     3     4      5       6–13
+      head  body  tail  legs  gen    flags   entropy
+flags bit 0 mutant · bit 1 chimera`}
+          </pre>
+        </section>
+        <section>
+          <h2 className="font-display text-2xl italic text-fg">Founders</h2>
+          <ul className="mt-3 space-y-2">
+            {FOUNDERS.map((c) => {
+              const t = traits(c);
+              return (
+                <li key={c.id} className="flex items-baseline justify-between gap-3 text-sm">
+                  <span className="text-fg">
+                    <span className="font-display italic">{c.name}</span>
+                    <span className="text-subtle"> — {FOUNDER_NOTE[c.id]}</span>
+                  </span>
+                  <span className="shrink-0 tabular text-subtle">
+                    n{t.nerve} m{t.mass} l{t.luck}
+                  </span>
+                </li>
+              );
+            })}
+          </ul>
         </section>
         <section>
           <h2 className="font-display text-2xl italic text-fg">Coats</h2>
@@ -64,11 +95,14 @@ function Manual() {
         <section>
           <h2 className="font-display text-2xl italic text-fg">Nursery</h2>
           <p className="mt-2">
-            Remix file ready: MeogenNursery.sol. Mix fee goes to a bowl contract, never a wallet.
-            One-hour cooldown. Founder cap 500. Not live. Cats on this page stay on this device.
+            Remix file ready: MeogenNursery.sol. Mix fee goes to a vat contract, never a wallet.
+            One-hour sleep. Founder cap 500. Not live. Cats on this page stay on this device.
           </p>
           <p className="mt-2">
-            <a href="/contracts/MeogenNursery.sol" className="text-accent underline-offset-4 hover:underline">
+            <a
+              href="/contracts/MeogenNursery.sol"
+              className="text-accent underline-offset-4 hover:underline"
+            >
               Download MeogenNursery.sol
             </a>
             <span className="text-subtle"> · </span>
@@ -80,14 +114,13 @@ function Manual() {
         <section>
           <h2 className="font-display text-2xl italic text-fg">Later</h2>
           <p className="mt-2">
-            Bowl on Robinhood Chain. Token after kittens travel. No merkle on day one. Not
-            Mewgenics.
+            Vat on Robinhood Chain. Token after kittens travel. No merkle on day one. Not Mewgenics.
           </p>
         </section>
       </div>
       <p className="mt-10 flex gap-4">
         <Link to="/cattery" className="text-accent underline-offset-4 hover:underline">
-          Mix a litter
+          Mix a kit
         </Link>
         <Link to="/alley" className="text-accent underline-offset-4 hover:underline">
           Run the alley

@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { CatPortrait } from "@/components/meogen/CatPortrait";
 import { Button } from "@/components/ui/button";
-import { FOUNDERS } from "@/lib/meogen/genes";
+import { FOUNDER_NOTE, FOUNDERS, traits } from "@/lib/meogen/genes";
 import { useCattery, useCatteryReady } from "@/lib/meogen/store";
 
 export const Route = createFileRoute("/")({
@@ -12,11 +12,13 @@ function Home() {
   const ready = useCatteryReady();
   const cats = useCattery((s) => s.cats);
   const born = ready ? Math.max(0, cats.length - FOUNDERS.length) : 0;
-  const best = ready ? cats.reduce((m, c) => Math.max(m, c.alleyBest ?? 0), 0) : 0;
+  const ranked = ready
+    ? [...cats].filter((c) => (c.alleyBest ?? 0) > 0).sort((a, b) => b.alleyBest - a.alleyBest)
+    : [];
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6">
-      <p className="seal text-muted">Nursery</p>
+      <p className="seal text-muted">Lab</p>
       <h1 className="mt-3 max-w-xl font-display text-5xl italic leading-[1.05] text-balance sm:text-6xl">
         Meogen
       </h1>
@@ -24,7 +26,7 @@ function Home() {
         The gene that mews. Mix two cats. Send the kitten down the alley.
       </p>
       <p className="mt-2 max-w-lg text-sm text-pretty text-subtle">
-        Not Mewgenics. Not Tetris. A cattery first. Chain later.
+        Not Mewgenics. A cattery first. Chain later.
       </p>
       <div className="mt-8 flex flex-wrap gap-3">
         <Button variant="accent" size="lg" asChild>
@@ -34,26 +36,40 @@ function Home() {
           <Link to="/alley">Run the alley</Link>
         </Button>
       </div>
-      {ready && (born > 0 || best > 0) && (
+      {ready && (
         <p className="mt-6 text-sm tabular text-muted">
           {cats.length} in the clowder
           {born > 0 ? ` · ${born} born here` : ""}
-          {best > 0 ? ` · alley ${best}` : ""}
+          {ranked[0] ? ` · alley ${ranked[0].name} ${ranked[0].alleyBest}` : ""}
         </p>
       )}
       <div className="mt-14 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
-        {FOUNDERS.map((cat) => (
-          <div key={cat.id} className="rounded-xl border border-border bg-surface/70 p-2">
-            <CatPortrait cat={cat} />
-            <p className="mt-1 text-center font-display italic">{cat.name}</p>
-          </div>
-        ))}
+        {FOUNDERS.map((cat) => {
+          const t = traits(cat);
+          return (
+            <Link
+              key={cat.id}
+              to="/cattery"
+              search={{ dam: cat.id }}
+              className="rounded-xl border border-border bg-surface/70 p-2 transition-colors duration-150 hover:border-border-strong"
+            >
+              <CatPortrait cat={cat} />
+              <p className="mt-1 text-center font-display italic">{cat.name}</p>
+              <p className="mt-0.5 text-center text-xs text-pretty text-subtle">
+                {FOUNDER_NOTE[cat.id]}
+              </p>
+              <p className="mt-1 text-center text-xs tabular text-subtle">
+                n{t.nerve} m{t.mass} l{t.luck}
+              </p>
+            </Link>
+          );
+        })}
       </div>
       <ol className="mt-14 grid gap-4 sm:grid-cols-3">
         {[
           { n: "01", t: "Mix gene", d: "Dam and sire. Each organ rolls fifty-fifty." },
-          { n: "02", t: "Kitten", d: "Six percent mutant. Chimera if the pelt splits." },
-          { n: "03", t: "Alley", d: "Forty-five seconds. Nerve jumps. Mass lives." },
+          { n: "02", t: "Kit", d: "Six percent mutant. Chimera if the pelt splits." },
+          { n: "03", t: "Alley", d: "Forty-five seconds. Nerve leaps. Mass lives." },
         ].map((step) => (
           <li key={step.n} className="rounded-xl border border-border bg-surface/60 p-4">
             <p className="seal text-accent">{step.n}</p>
@@ -62,6 +78,27 @@ function Home() {
           </li>
         ))}
       </ol>
+      {ranked.length > 0 && (
+        <section className="mt-14">
+          <p className="seal text-muted">Alley marks</p>
+          <ol className="mt-3 space-y-2">
+            {ranked.slice(0, 5).map((c, i) => (
+              <li key={c.id}>
+                <Link
+                  to="/alley"
+                  search={{ cat: c.id }}
+                  className="flex items-center justify-between rounded-xl border border-border bg-surface/70 px-4 py-3 hover:border-border-strong"
+                >
+                  <span className="font-display italic">
+                    {i + 1}. {c.name}
+                  </span>
+                  <span className="tabular text-muted">{c.alleyBest}</span>
+                </Link>
+              </li>
+            ))}
+          </ol>
+        </section>
+      )}
     </div>
   );
 }

@@ -16,7 +16,7 @@ const SLOT: Record<Organ, { x: number; y: number; s: number }> = {
   head: { x: 55, y: 8, s: 250 },
 };
 
-/** Shareable SVG of the original overflowing parts. Not the on-chain seal. */
+/** Shareable SVG of the original organ parts. Not the on-chain seal. */
 export function catPortraitSvg(cat: Cat): string {
   const chimera = isChimera(cat);
   const t = traits(cat);

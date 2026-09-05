@@ -10,7 +10,7 @@
   --color-subtle: #7d6a5c;
   --color-accent: #d4563a;
   --color-accent-fg: #fff6ee;
-  --color-jade: #6f8f74;
+  --color-sage: #6f8f74;
   --color-ink: #12101a;
   --color-sky: #3a4e68;
   --color-dusk: #6a4a58;
@@ -33,6 +33,11 @@
   --radius-2xl: 32px;
 
   --shadow-soft: 0 18px 50px color-mix(in oklab, #000 42%, transparent);
+
+  --motion-quick: 150ms;
+  --motion-fast: 250ms;
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+
 }
 
 @layer base {
@@ -92,7 +97,7 @@
   color: var(--color-accent);
 }
 
-.garden-sky {
+.dusk-sky {
   position: fixed;
   inset: 0;
   z-index: 0;
@@ -100,7 +105,7 @@
   overflow: hidden;
 }
 
-.garden-sky__wash {
+.dusk-sky__wash {
   position: absolute;
   inset: 0;
   background:
@@ -109,7 +114,7 @@
     linear-gradient(180deg, #2a3348 0%, #1a1520 42%, #12101a 100%);
 }
 
-.garden-sky__moon {
+.dusk-sky__moon {
   position: absolute;
   top: 7%;
   right: 12%;
@@ -121,7 +126,7 @@
   opacity: 0.7;
 }
 
-.garden-sky__lantern {
+.dusk-sky__lantern {
   position: absolute;
   top: -8%;
   left: -6%;
@@ -131,35 +136,35 @@
   background: radial-gradient(circle, color-mix(in oklab, var(--color-accent) 38%, transparent), transparent 68%);
 }
 
-.garden-sky__hill {
+.dusk-sky__hill {
   position: absolute;
   left: -10%;
   right: -10%;
   border-radius: 50% 50% 0 0;
 }
 
-.garden-sky__hill--far {
+.dusk-sky__hill--far {
   bottom: -18%;
   height: 42%;
   background: radial-gradient(ellipse at 50% 0%, color-mix(in oklab, var(--color-moss) 55%, #1a2030), #152018);
   opacity: 0.85;
 }
 
-.garden-sky__hill--near {
+.dusk-sky__hill--near {
   bottom: -28%;
   height: 38%;
   background: radial-gradient(ellipse at 40% 0%, color-mix(in oklab, var(--color-ink) 40%, var(--color-moss)), #0e0c12);
   opacity: 0.92;
 }
 
-.garden-sky__mist {
+.dusk-sky__mist {
   position: absolute;
   inset: auto 0 0;
   height: 36%;
   background: linear-gradient(180deg, transparent, color-mix(in oklab, var(--color-ink) 75%, transparent));
 }
 
-.garden-sky__wave {
+.dusk-sky__wave {
   position: absolute;
   inset: 0;
   opacity: 0.14;
@@ -172,6 +177,21 @@
   );
   background-size: 48px 24px;
   mix-blend-mode: soft-light;
+}
+
+@keyframes organ-land {
+  from {
+    transform: scale(0.96);
+    opacity: 0.35;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.organ-land {
+  animation: organ-land var(--motion-fast) var(--ease-out);
 }
 
 @media (prefers-reduced-motion: reduce) {

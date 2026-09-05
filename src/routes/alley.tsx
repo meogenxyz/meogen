@@ -27,14 +27,38 @@ function AlleyPage() {
     () => [...cats].sort((a, b) => (b.alleyBest ?? 0) - (a.alleyBest ?? 0)),
     [cats],
   );
+  const marks = ranked.filter((c) => (c.alleyBest ?? 0) > 0);
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
       <p className="seal text-muted">Alley</p>
       <h1 className="mt-2 font-display text-4xl italic text-balance">Send a cat out</h1>
       <p className="mt-3 max-w-xl text-pretty text-muted">
-        Nerve lifts the pounce. Mass buys a second life. Luck sometimes slips a crate.
+        Nerve lifts the leap. Mass buys a second life. Luck sometimes slips a crate. Leap to go —
+        the clock waits.
       </p>
+
+      {!cat && marks.length > 0 && (
+        <section className="mt-8">
+          <p className="seal text-muted">Marks</p>
+          <ol className="mt-3 space-y-2">
+            {marks.slice(0, 6).map((c, i) => (
+              <li key={c.id}>
+                <button
+                  type="button"
+                  onClick={() => navigate({ search: { cat: c.id } })}
+                  className="flex w-full items-center justify-between rounded-xl border border-border bg-surface/70 px-4 py-3 text-left hover:border-border-strong"
+                >
+                  <span className="font-display italic">
+                    {i + 1}. {c.name}
+                  </span>
+                  <span className="tabular text-muted">{c.alleyBest}</span>
+                </button>
+              </li>
+            ))}
+          </ol>
+        </section>
+      )}
 
       {!cat && (
         <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">

@@ -1,8 +1,8 @@
 # Meogen
 
-The gene that mews. Mix original overflowing cat sprites. Send a kitten down the alley.
+The gene that mews. Mix original cat organs. Send a kitten down the alley.
 
-Not Mewgenics. Not Tetris.
+Not Mewgenics.
 
 - Web: [meogen.xyz](https://meogen.xyz)
 - X: [@meogenXYZ](https://x.com/meogenXYZ)
@@ -13,12 +13,12 @@ Not Mewgenics. Not Tetris.
 
 | Page | What |
 |---|---|
-| Nest | Six founders |
+| Lab | Six founders |
 | Cattery | Dam + sire. 50/50 organs. 6% mutant |
-| Alley | 45s pounce. Nerve / mass / luck |
-| Manual | The mix + Nursery notes |
+| Alley | 45s leap. Nerve / mass / luck |
+| Codex | The mix + Nursery notes |
 
-Cats live on the device for now. `MeogenNursery.sol` is ready for Remix when a Bowl exists.
+Cats live on the device for now. `MeogenNursery.sol` is ready for Remix when a Vat exists.
 
 ## Stack
 

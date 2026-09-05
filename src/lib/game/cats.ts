@@ -11,7 +11,7 @@ export const CAT_PARTS: Record<Role, string> = {
 
 const cache = new Map<string, HTMLImageElement>();
 
-/** Coat the original ink (#171210) so organs keep overflowing line art. */
+/** Coat the original ink (#171210) so organs keep the line art. */
 export function tintSvg(svg: string, color: string) {
   return svg.replace(/#171210/g, color).replace("<svg", `<svg fill="${color}"`);
 }
@@ -55,7 +55,7 @@ export function catSprite(color: string, role: Role) {
   return cache.get(`${color}-${role}`) ?? null;
 }
 
-/** Standing cat from four overflowing organs. `cy` is the ground line (feet). */
+/** Standing cat from four original organs. `cy` is the ground line (feet). */
 export function drawStandingCat(
   ctx: CanvasRenderingContext2D,
   coats: { head: string; body: string; tail: string; legs: string },

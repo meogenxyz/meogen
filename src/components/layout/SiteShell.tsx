@@ -1,15 +1,15 @@
 import type { ReactNode } from "react";
 import { Link, useRouterState } from "@tanstack/react-router";
-import { GardenSky } from "@/components/layout/GardenSky";
+import { DuskSky } from "@/components/layout/DuskSky";
 import { MEOGEN } from "@/lib/meogen/links";
 import { useCatteryReady } from "@/lib/meogen/store";
 import { cn } from "@/lib/utils";
 
 const NAV = [
-  { to: "/", label: "Nest" },
+  { to: "/", label: "Lab" },
   { to: "/cattery", label: "Cattery" },
   { to: "/alley", label: "Alley" },
-  { to: "/docs", label: "Manual" },
+  { to: "/docs", label: "Codex" },
 ] as const;
 
 const SOCIAL = [
@@ -24,7 +24,7 @@ export function SiteShell({ children }: { children: ReactNode }) {
   useCatteryReady();
   return (
     <div className="relative min-h-dvh text-fg">
-      <GardenSky />
+      <DuskSky />
       <header className="sticky top-0 z-30 border-b border-border bg-ink/55 backdrop-blur-md">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
           <Link to="/" className="flex items-baseline gap-2">
