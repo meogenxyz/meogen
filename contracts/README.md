@@ -18,7 +18,12 @@ On-chain strings (same on both contracts):
 - telegram `https://t.me/meogenXYZ`
 - github `https://github.com/meogenxyz/meogen`
 
-Call `socials()` after verify.
+## Live (Robinhood 4663)
+
+- Vat [`0x1a69f90479Cab01aC47c1c690c9001f0AfB26975`](https://robinhoodchain.blockscout.com/address/0x1a69f90479Cab01aC47c1c690c9001f0AfB26975)
+- Nursery [`0x6fc0658a530a85670926E4A85516A9eA88351eC9`](https://robinhoodchain.blockscout.com/address/0x6fc0658a530a85670926E4A85516A9eA88351eC9)
+
+Nursery `vat()` returns the Vat. Mix fee 0.0003 ETH.
 
 ## After deploy
 

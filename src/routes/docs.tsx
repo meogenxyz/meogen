@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { COATS, FOUNDER_NOTE, FOUNDERS, MUTANT_BPS, traits } from "@/lib/meogen/genes";
+import { CHAIN, explorerAddress } from "@/lib/meogen/chain";
 
 export const Route = createFileRoute("/docs")({
   component: Codex,
@@ -101,10 +102,30 @@ flags bit 0 mutant · bit 1 chimera`}
         <section>
           <h2 className="font-display text-2xl tracking-wide text-ink">Nursery</h2>
           <p className="mt-2">
-            Remix files ready: MeogenVat.sol then MeogenNursery.sol. Mix fee goes to the vat
-            contract, never a wallet. One-hour sleep. Founder cap 500. Symbol KIT — not the
-            Pons ticker. Not live. Cats on this page stay on this device.
+            Live on Robinhood Chain ({CHAIN.id}). Mix fee goes to the vat contract, never a
+            wallet. One-hour sleep. Founder cap 500. Symbol KIT — not the Pons ticker. Mix on
+            this page still writes to this device until a wallet is wired.
           </p>
+          <ul className="mt-3 space-y-1 text-sm">
+            <li>
+              Vat{" "}
+              <a
+                href={explorerAddress(CHAIN.vat)}
+                className="break-all text-accent underline-offset-4 hover:underline"
+              >
+                {CHAIN.vat}
+              </a>
+            </li>
+            <li>
+              Nursery{" "}
+              <a
+                href={explorerAddress(CHAIN.nursery)}
+                className="break-all text-accent underline-offset-4 hover:underline"
+              >
+                {CHAIN.nursery}
+              </a>
+            </li>
+          </ul>
           <p className="mt-2">
             <a
               href="/contracts/MeogenVat.sol"
