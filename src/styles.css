@@ -331,15 +331,25 @@
 
 .tarot.is-picked {
   transform: none;
-  outline: 3px solid var(--color-accent);
-  outline-offset: 3px;
+  outline: none;
   z-index: 2;
   background: transparent;
 }
 
 .tarot:focus-visible {
+  outline: none;
+}
+
+.tarot:focus-visible .tarot__shot,
+.tarot.is-picked .tarot__shot {
   outline: 3px solid var(--color-accent);
-  outline-offset: 4px;
+  outline-offset: 0;
+}
+
+.tarot__shot {
+  display: block;
+  width: 100%;
+  line-height: 0;
 }
 
 @media (min-width: 640px) {
