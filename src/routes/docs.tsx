@@ -101,10 +101,18 @@ flags bit 0 mutant · bit 1 chimera`}
         <section>
           <h2 className="font-display text-2xl tracking-wide text-ink">Nursery</h2>
           <p className="mt-2">
-            Remix file ready: MeogenNursery.sol. Mix fee goes to a vat contract, never a wallet.
-            One-hour sleep. Founder cap 500. Not live. Cats on this page stay on this device.
+            Remix files ready: MeogenVat.sol then MeogenNursery.sol. Mix fee goes to the vat
+            contract, never a wallet. One-hour sleep. Founder cap 500. Symbol KIT — not the
+            Pons ticker. Not live. Cats on this page stay on this device.
           </p>
           <p className="mt-2">
+            <a
+              href="/contracts/MeogenVat.sol"
+              className="text-accent underline-offset-4 hover:underline"
+            >
+              Download MeogenVat.sol
+            </a>
+            <span className="text-subtle"> · </span>
             <a
               href="/contracts/MeogenNursery.sol"
               className="text-accent underline-offset-4 hover:underline"
@@ -120,7 +128,7 @@ flags bit 0 mutant · bit 1 chimera`}
         <section>
           <h2 className="font-display text-2xl tracking-wide text-ink">Later</h2>
           <p className="mt-2">
-            Vat on Robinhood Chain. Token after kittens travel. No merkle on day one. Not Mewgenics.
+            Token after kittens travel. No merkle on day one. Not Mewgenics.
           </p>
         </section>
       </div>
