@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.24;
+pragma solidity ^0.8.24;
 
 /// @title Meogen Nursery
 /// @notice Mix two cats. Each organ 50/50. 6% mutant per organ.
 /// Mix fee goes to Vat — never an EOA. One-hour cooldown. Founder cap 500.
 /// Token SVG is a genome seal. Original organ sprites live on meogen.xyz.
-/// Not Mewgenics. Compiler 0.8.24, optimizer 200, Robinhood 4663.
+/// This is NOT the $MEOGEN Pons ticker. Compiler 0.8.24, optimizer 200, Robinhood 4663.
 contract MeogenNursery {
     address public owner;
     address payable public vat;
@@ -25,8 +25,8 @@ contract MeogenNursery {
     mapping(uint256 => uint64) public lastMixAt; // by token id
     mapping(address => uint64) public lastMixBy;
 
-    string public constant name = "Meogen";
-    string public constant symbol = "MEOGEN";
+    string public constant name = "Meogen Kit";
+    string public constant symbol = "KIT";
 
     event Transfer(address indexed from, address indexed to, uint256 indexed id);
     event Mixed(uint256 indexed kitten, uint256 dam, uint256 sire, uint256 genome);
@@ -39,13 +39,13 @@ contract MeogenNursery {
     }
 
     constructor(address payable _vat) {
-        require(_vat != address(0), "vat");
+        _requireVat(_vat);
         owner = msg.sender;
         vat = _vat;
     }
 
     function setVat(address payable _vat) external onlyOwner {
-        require(_vat != address(0), "vat");
+        _requireVat(_vat);
         vat = _vat;
         emit VatSet(_vat);
     }
@@ -58,6 +58,10 @@ contract MeogenNursery {
     function transferOwnership(address next) external onlyOwner {
         require(next != address(0), "zero");
         owner = next;
+    }
+
+    function totalSupply() external view returns (uint256) {
+        return nextId - 1;
     }
 
     /// @notice Free founder mint. Cycles the six palettes. Cap 500.
@@ -82,11 +86,6 @@ contract MeogenNursery {
         lastMixAt[dam] = uint64(block.timestamp);
         lastMixAt[sire] = uint64(block.timestamp);
 
-        if (msg.value > 0) {
-            (bool ok, ) = vat.call{value: msg.value}("");
-            require(ok, "vat");
-        }
-
         id = nextId++;
         uint256 g = _mixGenomes(genome[dam], genome[sire], id);
         genome[id] = g;
@@ -95,6 +94,11 @@ contract MeogenNursery {
         ownerOf[id] = msg.sender;
         emit Mixed(id, dam, sire, g);
         emit Transfer(address(0), msg.sender, id);
+
+        if (msg.value > 0) {
+            (bool ok, ) = vat.call{value: msg.value}("");
+            require(ok, "vat");
+        }
     }
 
     function transfer(address to, uint256 id) external {
@@ -122,7 +126,15 @@ contract MeogenNursery {
         return (g >> 40) & 1 == 1;
     }
 
+    function isChimera(uint256 g) public pure returns (bool) {
+        return (g >> 41) & 1 == 1;
+    }
+
     // --- internals ---
+
+    function _requireVat(address _vat) internal view {
+        require(_vat != address(0) && _vat.code.length > 0, "vat");
+    }
 
     function _founderGenome(uint256 id, address minter) internal view returns (uint256 g) {
         // Six founder palettes, matching the site.
@@ -135,25 +147,34 @@ contract MeogenNursery {
             [7, 0, 7, 9]
         ];
         uint256 i = (id + uint256(uint160(minter))) % 6;
-        g = uint256(palettes[i][0]);
-        g |= uint256(palettes[i][1]) << 8;
-        g |= uint256(palettes[i][2]) << 16;
-        g |= uint256(palettes[i][3]) << 24;
-        // gen 0, entropy in high bits
+        uint8 h = palettes[i][0];
+        uint8 b = palettes[i][1];
+        uint8 t = palettes[i][2];
+        uint8 l = palettes[i][3];
+        g = uint256(h);
+        g |= uint256(b) << 8;
+        g |= uint256(t) << 16;
+        g |= uint256(l) << 24;
+        if (h != b || b != t || t != l) g |= uint256(1) << 41;
         g |= (uint256(keccak256(abi.encodePacked(id, minter, block.prevrandao))) & 0xffff_ffff_ffff_ffff) << 48;
     }
 
     function _mixGenomes(uint256 dam, uint256 sire, uint256 id) internal view returns (uint256 g) {
         bool mutant;
+        bool chimera;
+        uint8 first;
         bytes32 seed = keccak256(abi.encodePacked(dam, sire, id, msg.sender, block.prevrandao, block.timestamp));
         for (uint8 slot; slot < 4; slot++) {
             uint256 roll = uint256(keccak256(abi.encodePacked(seed, slot)));
             uint8 coat = uint8((roll & 1 == 0) ? organ(dam, slot) : organ(sire, slot));
             if (uint16(roll >> 8) % 10_000 < MUTANT_BPS) {
                 mutant = true;
-                coat = uint8((roll >> 24) % 12);
+                if (uint16(roll >> 40) % 100 < 45) coat = 11;
+                else coat = uint8((roll >> 24) % 11);
             }
             g |= uint256(coat) << (uint256(slot) * 8);
+            if (slot == 0) first = coat;
+            else if (coat != first) chimera = true;
         }
         uint8 gen = generation(dam);
         uint8 gs = generation(sire);
@@ -161,57 +182,50 @@ contract MeogenNursery {
         if (gen < 255) gen += 1;
         g |= uint256(gen) << 32;
         if (mutant) g |= uint256(1) << 40;
+        if (chimera) g |= uint256(1) << 41;
         g |= (uint256(seed) & 0xffff_ffff_ffff_ffff) << 48;
     }
 
-    function _hex4(uint8 n) internal pure returns (bytes memory) {
-        bytes16 lut = "0123456789abcdef";
-        bytes memory o = new bytes(2);
-        o[0] = lut[n >> 4];
-        o[1] = lut[n & 15];
-        return o;
-    }
-
-    function _coatHex(uint8 id) internal pure returns (string memory) {
-        // Must match site COATS[].
-        if (id == 0) return "171210";
-        if (id == 1) return "d4563a";
-        if (id == 2) return "f6ecdc";
-        if (id == 3) return "4d6a52";
-        if (id == 4) return "6a4a58";
-        if (id == 5) return "3a4e68";
-        if (id == 6) return "e8c9a0";
-        if (id == 7) return "c47a3a";
-        if (id == 8) return "6f8f74";
-        if (id == 9) return "2a2320";
-        if (id == 10) return "fff6ee";
-        return "c9a06a";
+    function _coatRgb(uint8 id) internal pure returns (string memory) {
+        // Must match site COATS[]. rgb() so tokenURI is not broken by # fragments.
+        if (id == 0) return "23,18,16";
+        if (id == 1) return "212,86,58";
+        if (id == 2) return "246,236,220";
+        if (id == 3) return "77,106,82";
+        if (id == 4) return "106,74,88";
+        if (id == 5) return "58,78,104";
+        if (id == 6) return "232,201,160";
+        if (id == 7) return "196,122,58";
+        if (id == 8) return "111,143,116";
+        if (id == 9) return "42,35,32";
+        if (id == 10) return "255,246,238";
+        return "201,160,106";
     }
 
     function _json(uint256 id, uint256 g) internal pure returns (string memory) {
-        string memory h = _coatHex(organ(g, 0));
-        string memory b = _coatHex(organ(g, 1));
-        string memory t = _coatHex(organ(g, 2));
-        string memory l = _coatHex(organ(g, 3));
+        string memory h = _coatRgb(organ(g, 0));
+        string memory b = _coatRgb(organ(g, 1));
+        string memory t = _coatRgb(organ(g, 2));
+        string memory l = _coatRgb(organ(g, 3));
         string memory svg = string.concat(
             "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 320 320'>",
-            "<rect width='320' height='320' fill='#12101a'/>",
-            "<rect x='16' y='16' width='288' height='288' rx='18' fill='#1e1a1c' stroke='#d4563a' stroke-width='3'/>",
-            "<ellipse cx='230' cy='150' rx='48' ry='18' fill='#", t, "'/>",
-            "<rect x='90' y='168' width='28' height='70' rx='8' fill='#", l, "'/>",
-            "<rect x='160' y='168' width='28' height='70' rx='8' fill='#", l, "'/>",
-            "<rect x='80' y='120' width='120' height='70' rx='28' fill='#", b, "'/>",
-            "<circle cx='175' cy='110' r='36' fill='#", h, "'/>",
-            "<polygon points='150,92 158,68 172,96' fill='#", h, "'/>",
-            "<polygon points='188,92 210,68 198,98' fill='#", h, "'/>",
-            "<text x='160' y='292' text-anchor='middle' fill='#f6ecdc' font-size='14' font-family='serif'>Meogen #",
+            "<rect width='320' height='320' fill='rgb(18,16,26)'/>",
+            "<rect x='16' y='16' width='288' height='288' rx='18' fill='rgb(30,26,28)' stroke='rgb(212,86,58)' stroke-width='3'/>",
+            "<ellipse cx='230' cy='150' rx='48' ry='18' fill='rgb(", t, ")'/>",
+            "<rect x='90' y='168' width='28' height='70' rx='8' fill='rgb(", l, ")'/>",
+            "<rect x='160' y='168' width='28' height='70' rx='8' fill='rgb(", l, ")'/>",
+            "<rect x='80' y='120' width='120' height='70' rx='28' fill='rgb(", b, ")'/>",
+            "<circle cx='175' cy='110' r='36' fill='rgb(", h, ")'/>",
+            "<polygon points='150,92 158,68 172,96' fill='rgb(", h, ")'/>",
+            "<polygon points='188,92 210,68 198,98' fill='rgb(", h, ")'/>",
+            "<text x='160' y='292' text-anchor='middle' fill='rgb(246,236,220)' font-size='14' font-family='serif'>Meogen #",
             _u(id),
             "</text></svg>"
         );
         return string.concat(
-            '{"name":"Meogen #',
+            '{"name":"Meogen Kit #',
             _u(id),
-            '","description":"The gene that mews. Not Mewgenics.","image":"data:image/svg+xml;utf8,',
+            '","description":"The gene that mews.","image":"data:image/svg+xml;utf8,',
             svg,
             '"}'
         );
