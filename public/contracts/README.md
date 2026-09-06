@@ -11,7 +11,14 @@ These are **not** the Pons `$MEOGEN` ticker. Token comes later, after kittens tr
 3. Deploy **MeogenNursery(`vat`)** — constructor takes that address.
 4. Call `nursery.vat()` and check it equals the Vat.
 
-Mix fee must never land on an EOA. `setVat` refuses wallets without code.
+On-chain strings (same on both contracts):
+
+- website `https://meogen.xyz`
+- twitter `https://x.com/meogenXYZ`
+- telegram `https://t.me/meogenXYZ`
+- github `https://github.com/meogenxyz/meogen`
+
+Call `socials()` after verify.
 
 ## After deploy
 

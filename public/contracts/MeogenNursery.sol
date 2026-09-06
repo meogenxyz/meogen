@@ -2,12 +2,19 @@
 pragma solidity ^0.8.24;
 
 /// @title Meogen Nursery
-/// @notice Mix two cats. Each organ 50/50. 6% mutant per organ.
-/// Mix fee goes to Vat — never an EOA. One-hour cooldown. Founder cap 500.
-/// Token SVG is a genome seal. Original organ sprites live on meogen.xyz.
-/// This is NOT the $MEOGEN Pons ticker. Compiler 0.8.24, optimizer 200, Robinhood 4663.
+/// @notice Mix two cats. Each organ fifty-fifty. Six percent mutant per organ.
+/// Mix fee goes to the Vat — never an EOA. One-hour cooldown. Founder cap 500.
+/// On-chain image is a genome seal. Illustrated mutant cards live on the site.
+/// This is the kit registry (symbol KIT), not the $MEOGEN Pons ticker.
+/// @dev Compiler 0.8.24, optimizer 200 runs, Robinhood Chain 4663.
+/// @custom:website https://meogen.xyz
+/// @custom:twitter https://x.com/meogenXYZ
+/// @custom:telegram https://t.me/meogenXYZ
+/// @custom:github https://github.com/meogenxyz/meogen
 contract MeogenNursery {
+    /// @notice Deployer. May set the vat, the mix fee, and a new owner.
     address public owner;
+    /// @notice Contract that receives every mix fee. Must have code.
     address payable public vat;
 
     uint256 public mixFee = 0.0003 ether;
@@ -19,7 +26,7 @@ contract MeogenNursery {
     uint256 public founderMinted;
 
     mapping(uint256 => address) public ownerOf;
-    mapping(uint256 => uint256) public genome; // packed: see pack()
+    mapping(uint256 => uint256) public genome; // packed: head body tail legs gen flags entropy
     mapping(uint256 => uint256) public damOf;
     mapping(uint256 => uint256) public sireOf;
     mapping(uint256 => uint64) public lastMixAt; // by token id
@@ -27,6 +34,12 @@ contract MeogenNursery {
 
     string public constant name = "Meogen Kit";
     string public constant symbol = "KIT";
+    string public constant description =
+        "The gene that mews. Mix original mutant cats. Four organs. Keep the wrong ones.";
+    string public constant website = "https://meogen.xyz";
+    string public constant twitter = "https://x.com/meogenXYZ";
+    string public constant telegram = "https://t.me/meogenXYZ";
+    string public constant github = "https://github.com/meogenxyz/meogen";
 
     event Transfer(address indexed from, address indexed to, uint256 indexed id);
     event Mixed(uint256 indexed kitten, uint256 dam, uint256 sire, uint256 genome);
@@ -44,22 +57,35 @@ contract MeogenNursery {
         vat = _vat;
     }
 
+    /// @notice Site, X, Telegram, GitHub.
+    function socials()
+        external
+        pure
+        returns (string memory, string memory, string memory, string memory)
+    {
+        return (website, twitter, telegram, github);
+    }
+
+    /// @notice Point mix fees at a new vat. Must be a contract, never a wallet.
     function setVat(address payable _vat) external onlyOwner {
         _requireVat(_vat);
         vat = _vat;
         emit VatSet(_vat);
     }
 
+    /// @notice Change the mix price in wei.
     function setMixFee(uint256 fee) external onlyOwner {
         mixFee = fee;
         emit MixFeeSet(fee);
     }
 
+    /// @notice Hand the nursery to a new owner. Zero address refused.
     function transferOwnership(address next) external onlyOwner {
         require(next != address(0), "zero");
         owner = next;
     }
 
+    /// @notice Kits minted so far.
     function totalSupply() external view returns (uint256) {
         return nextId - 1;
     }
@@ -75,7 +101,7 @@ contract MeogenNursery {
         emit Transfer(address(0), msg.sender, id);
     }
 
-    /// @notice Mix dam + sire. Fee to Vat. Cooldown 1 hour per mixer.
+    /// @notice Mix dam and sire. Fee in ETH goes to the Vat. One hour sleep per mixer.
     function mix(uint256 dam, uint256 sire) external payable returns (uint256 id) {
         require(ownerOf[dam] == msg.sender && ownerOf[sire] == msg.sender, "not yours");
         require(dam != sire, "same");
@@ -101,6 +127,7 @@ contract MeogenNursery {
         }
     }
 
+    /// @notice Send a kit. No marketplace approve. Owner only.
     function transfer(address to, uint256 id) external {
         require(ownerOf[id] == msg.sender, "not yours");
         require(to != address(0), "zero");
@@ -108,24 +135,29 @@ contract MeogenNursery {
         emit Transfer(msg.sender, to, id);
     }
 
+    /// @notice Genome seal as a data URI. Illustrated cards stay on meogen.xyz.
     function tokenURI(uint256 id) external view returns (string memory) {
         require(ownerOf[id] != address(0), "none");
         uint256 g = genome[id];
         return string.concat("data:application/json,", _json(id, g));
     }
 
+    /// @notice Coat id for one organ. Slot 0 head, 1 body, 2 tail, 3 legs.
     function organ(uint256 g, uint8 slot) public pure returns (uint8) {
         return uint8((g >> (uint256(slot) * 8)) & 0xff);
     }
 
+    /// @notice Generation byte. Founders are 0.
     function generation(uint256 g) public pure returns (uint8) {
         return uint8((g >> 32) & 0xff);
     }
 
+    /// @notice True if any organ rolled the 6% mutant.
     function isMutant(uint256 g) public pure returns (bool) {
         return (g >> 40) & 1 == 1;
     }
 
+    /// @notice True if the four organs do not share one coat.
     function isChimera(uint256 g) public pure returns (bool) {
         return (g >> 41) & 1 == 1;
     }
@@ -225,7 +257,7 @@ contract MeogenNursery {
         return string.concat(
             '{"name":"Meogen Kit #',
             _u(id),
-            '","description":"The gene that mews.","image":"data:image/svg+xml;utf8,',
+            '","description":"The gene that mews. Mix original mutant cats. https://meogen.xyz","image":"data:image/svg+xml;utf8,',
             svg,
             '"}'
         );
