@@ -103,7 +103,7 @@ flags bit 0 mutant · bit 1 chimera`}
           <h2 className="font-display text-2xl tracking-wide text-ink">Nursery</h2>
           <p className="mt-2">
             Live on Robinhood Chain ({CHAIN.id}). Mix fee goes to the vat contract, never a
-            wallet. One-hour sleep. Founder cap 500. Symbol KIT — not the Pons ticker. Mix on
+            wallet. One-hour sleep. Founder cap 500. Symbol KIT — not $MEOGEN. Mix on
             this page still writes to this device until a wallet is wired.
           </p>
           <ul className="mt-3 space-y-1 text-sm">
@@ -147,10 +147,31 @@ flags bit 0 mutant · bit 1 chimera`}
           </p>
         </section>
         <section>
-          <h2 className="font-display text-2xl tracking-wide text-ink">Later</h2>
+          <h2 className="font-display text-2xl tracking-wide text-ink">Ticker</h2>
           <p className="mt-2">
-            Token after kittens travel. No merkle on day one. Not Mewgenics.
+            $MEOGEN on PAIR V2. Five locked Uniswap V4 books: GLD 25, SLV 20, USO 20, USDG 20,
+            WETH 15. Not the kit registry.
           </p>
+          <ul className="mt-3 space-y-1 text-sm">
+            <li>
+              CA{" "}
+              <a
+                href={explorerAddress(CHAIN.token)}
+                className="break-all text-accent underline-offset-4 hover:underline"
+              >
+                {CHAIN.token}
+              </a>
+            </li>
+            <li>
+              Trade{" "}
+              <a
+                href={CHAIN.pair}
+                className="text-accent underline-offset-4 hover:underline"
+              >
+                pair.fund
+              </a>
+            </li>
+          </ul>
         </section>
       </div>
       </div>

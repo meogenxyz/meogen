@@ -14,6 +14,7 @@ const NAV = [
 
 const SOCIAL = [
   { href: MEOGEN.site, label: "meogen.xyz" },
+  { href: MEOGEN.pair, label: "$MEOGEN" },
   { href: MEOGEN.x, label: "X" },
   { href: MEOGEN.telegram, label: "Telegram" },
   { href: MEOGEN.github, label: "GitHub" },

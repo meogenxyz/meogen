@@ -2,7 +2,7 @@
 
 Compiler **0.8.24**, optimizer **200 runs**, EVM **cancun** (or default), network Robinhood **4663**.
 
-These are **not** the Pons `$MEOGEN` ticker. Token comes later, after kittens travel.
+These are the kit contracts. `$MEOGEN` is a separate PAIR V2 ticker.
 
 ## Order (do not reverse)
 
@@ -22,6 +22,7 @@ On-chain strings (same on both contracts):
 
 - Vat [`0x1a69f90479Cab01aC47c1c690c9001f0AfB26975`](https://robinhoodchain.blockscout.com/address/0x1a69f90479Cab01aC47c1c690c9001f0AfB26975)
 - Nursery [`0x6fc0658a530a85670926E4A85516A9eA88351eC9`](https://robinhoodchain.blockscout.com/address/0x6fc0658a530a85670926E4A85516A9eA88351eC9)
+- $MEOGEN (PAIR V2) [`0x503be5eeb51c2653fd8e84b049849a358e3d5555`](https://pair.fund/token/0x503be5eeb51c2653fd8e84b049849a358e3d5555) — GLD 25 / SLV 20 / USO 20 / USDG 20 / WETH 15
 
 Nursery `vat()` returns the Vat. Mix fee 0.0003 ETH.
 
